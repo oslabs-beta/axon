@@ -2,7 +2,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-  mode: 'development',
   entry: './src/renderer.tsx',
   target: 'electron-renderer',
   devtool: 'source-map',
@@ -16,13 +15,15 @@ module.exports = {
       ['@']: path.resolve(__dirname, 'src')
     },
     extensions: ['.tsx', '.ts', '.js', '.jsx'], /* maybe .jsx?? */
+    mainFields: ["main", "module", "browser"],
   },
   module: {
     rules: [
       {
         test: /\.ts(x?)$/,
         include: /src/,
-        use: [{ loader: 'ts-loader' }]
+        // use: [{ loader: 'ts-loader' }],
+        use: "babel-loader",
       },
       {
         test: /\.s[ac]ss$/i,
