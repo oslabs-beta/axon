@@ -1,10 +1,11 @@
 import React from 'react';
 import './app.scss';
+import RootComponent from '@/app/root';
 
 const App = () => {
   return (
     <div className="app">
-      <h1>  Eon App!!</h1>
+      <RootComponent />
     </div>
   );
 }
