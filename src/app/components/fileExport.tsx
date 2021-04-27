@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
-
+import check from '../../../assets/Checkmark.png'
 
 const FileExport = (props:any) => {
   const onFileDownload = ():void => {
     
-    return props.setProgressState("Your Supertest files have been exported...Import new server folder?");    
+    return props.setProgressState("Supertest sucessfully exported", 3, check);    
   }
 
   let text = props.superTest;
@@ -26,14 +26,15 @@ const FileExport = (props:any) => {
     element.click();
   
     document.body.removeChild(element);
+    onFileDownload();
 }
   
 
   return (
     <div>
-      <input type="button" id="btn" value="Download" onClick={() => {
-        onFileDownload();
-        download(filename, text);
+      <input type="button" id="exportbtn" value="Export" onClick={() => {
+        download(filename, text)
+        
       }}/>
     </div>
   )
