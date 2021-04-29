@@ -52,6 +52,7 @@
     "electron-is-dev": "^2.0.0",
     "eslint": "^7.24.0",
     "eslint-config-airbnb": "^18.2.1",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
     "sass": "^1.32.11",
     "sass-loader": "^11.0.1",
