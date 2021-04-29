@@ -35,7 +35,7 @@ header {
   align-content: space-between;
   justify-content: center;
   width: 500px;
-  border: solid black 1px;
+  border: solid black 2px;
 }
 
 #progressDisplay {
@@ -45,7 +45,7 @@ header {
   text-align: center;
 //   font-size: 10px;
   flex-direction: column;
-  border-bottom: solid black 1px;
+  border-bottom: solid black 2px;
   h1 {
     font-size: 25px;
     // text-shadow: -1px 1px 0 #000,
@@ -55,18 +55,34 @@ header {
   }
 
 }
-#progressBar {
+// #progressBar {
+//   width: 300px;
+//   height: 40px;
+// }
+#progressbarNew {
+  background-color: black;
+  border-radius: 13px;
+  /* (height of inner div) / 2 + padding */
+  padding: 3px;
   width: 300px;
-  height: 40px;
+  margin-bottom: 10px;
+ 
 }
 
+#progressbarNew>div {
+  background-color: orange;
+  // width: 40%;
+  /* Adjust with JavaScript */
+  height: 20px;
+  border-radius: 10px;
+}
 #import {
   // background-color: lightcyan;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 50px 50px 50px 50px;
-  border-bottom: solid black 1px;
+  border-bottom: solid black 2px;
   
 }
 #fileImg {
@@ -86,62 +102,130 @@ header {
 
 
 .custom-file-input {
-    color: transparent;
-    width: 168px;
-    // padding-right: 100px;
-    background-color: lightgray;
-    // justify-self: center;
-  }
-  .custom-file-input::-webkit-file-upload-button {
-    visibility: hidden;
+  color: transparent;
+  width: 168px;
+  border-radius: 3px;
 
+  &:hover{
+  box-shadow: 2px 2px black;
   }
-  .custom-file-input::before {
+  // padding-right: 100px;
+  // background-color: lightgray;
+  // justify-self: center;
+  &:-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  &:focus {
+    outline: none;
+    
+  }
+  &:before {
     content: 'Import server folder';
     color: cyan;
     display: inline-block;
     background: black;
     border: 1px solid #999;
+    border-color:  #231f20;
     border-radius: 3px;
     padding: 10px 18px 5px 18px;
     outline: none;
     white-space: nowrap;
     -webkit-user-select: none;
     cursor: pointer;
-    // text-shadow: 1px 1px #fff;
+    // text-shadow: 2px 2px black;
     width: 130px;
     font-weight: 700;
-    font-size: 10pt;
+    font-size: 14px;
     height: 20px;
     text-align: center;
+    
+  }
 
-  }
-  .custom-file-input:hover::before {
+  &:hover:before {
     border-color: black;
-    color: rgb(192, 85, 85);
+    color:#00E0E8;
+    background-color: white;    
   }
-  .custom-file-input:active {
+  &:active {
     outline: 0;
-  }
-  .custom-file-input:active::before {
+    border-radius: 3px;
+    box-shadow: -1px -1px black;
+   
+    &:before {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+    color: #666666;
+    }
   }
-  
+}
+    
 #hiddenImport {
   margin: 0 auto;
+  height:40px;
   // display: inline-flex;
 }
 
-// also 
-#createButton {
+@mixin button {
   padding: 0;
   height: 30px;
   width: 100px;
   margin: 0px 20px 0px 20px;
+  background-color: black;
+  color: cyan;
+  font-weight: 700;
+  font-size: 14px;
+  border: 1px solid black;
+  border-radius: 3px;
+  &:focus {
+    outline: none;
+    // background-color: yellow;
+  }
+  &:disabled {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+  }
+  &:enabled:hover {
+    background-color: white;
+    box-shadow: 2px 2px black;
+  }
+  &:enabled:active {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    box-shadow: -1px -1px black;
+    &:focus {
+      outline: none;
+      // background-color: yellow;
+    }
+  }
 }
+
+#createButton {
+  @include button;
+}
+
+
 #exportbtn {
-  padding: 0;
-  height: 30px;
-  width: 100px;
-  margin: 0px 20px 0px 20px;
+  @include button;
+}
+
+
+#bottomBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  #fname {
+    margin-bottom: 10px;
+    border-width: 0px;
+    padding: 2px;
+    height: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 3px;
+    &:focus {
+      outline: none;
+    }
+  }
 }
