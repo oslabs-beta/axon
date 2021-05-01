@@ -5,6 +5,7 @@ import FileExport from '@/app/components/fileExport';
 import logo from '../../assets/AxonLogoDotSize.png';
 import uploadFolder from '../../assets/folderImport.png';
 import createdTest from '../../assets/codeicon.png';
+import superTestCode from '../utils/automation';
 
 //example import
 // import algo1 from @app...
@@ -65,7 +66,19 @@ const RootComponent = () => {
           
           {/* Displays Create Button and Export Button. */}
           <div id="createExport">
-            <button disabled={axonState.createDisable} id="createButton" onClick={() => setAxonState({...axonState, superTestCode: /* algoname */createSupertest(axonState.fileList), progressText: "Supertest files created", image:createdTest, progressVal: "66.66%", exportDisable: false, createDisable: true })} >Create</button> 
+
+          <button disabled={axonState.createDisable} id="createButton" onClick={() => superTestCode(axonState.fileList)
+            .then( superTestCode => {
+              console.log('output of the Algo when Sucessfull: ', superTestCode);
+              setAxonState(({...axonState, superTestCode: superTestCode, progressText: "Supertest files created", image:createdTest, progressVal: "66.66%", exportDisable: false, createDisable: true }))
+            })
+            .catch(superTestCode => {
+              console.log('SuperTestCode from the Catch Block: ', superTestCode);
+          })} >
+          Create
+          </button> 
+         
+            
             {/* {console.log(axonState.filelist)} */}
             <FileExport superTest={axonState.superTestCode} textInput={axonState.textInput} disableStatus={axonState.exportDisable} setProgressState={(newProgressState:any, progVal: any, checkImg: any) => 
               setAxonState({...axonState, progressText: newProgressState, progressVal: progVal, image: checkImg}) }/>

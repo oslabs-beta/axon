@@ -10,7 +10,7 @@ export default function(fileText:any, currentFilePath:any){ // currentFilePath i
   returnObj.imports = {};
 
   // Generate all Matches in the fileText that match express endpoints
-  const endpointRE = /(?<object>.*?)\.(?<request>get|post|put|patch|delete)\s?\((?:'|")(?<path>.*?)(?:'|")\,\s?(?<midware>[a-z\.]*\,\n?\s*)*(?<anonFunc>(?:function)?\(req\,\s?res\)(?:.*?|\n)*?\}?\);)/gim
+  const endpointRE = /(?<object>.*?)\.(?<request>get|post|put|patch|delete)\s?\((?:'|")(?<path>.*?)(?:'|")\,\s?(?<midware>[a-z\.]*\,\r?\n?\s*)*(?<anonFunc>(?:function)?\(req\,\s?res\)(?:.*?|\r?\n)*?\}?\);)/gim
   const endpointMatch = [...fileText.matchAll(endpointRE)].reduce((obj, matchArr, ind) => {
     obj[ind] = matchArr.groups
     return obj;
