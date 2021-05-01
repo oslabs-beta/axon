@@ -10,14 +10,14 @@ export default function(fileText:any, currentFilePath:any){ // currentFilePath i
   returnObj.imports = {};
 
   // Generate all Matches in the fileText that match express endpoints
-  const endpointRE = /(?<object>.*?)\.(?<request>get|post|put|patch|delete)\s?\((?:'|")(?<path>.*?)(?:'|")\,\s?(?<midware>[a-z\.]*\,\r?\n?\s*)*(?<anonFunc>(?:function)?\(req\,\s?res\)(?:.*?|\r?\n)*?\}?\);)/gim
+  const endpointRE = /\.(?<request>get|post|put|patch|delete)\s?\((['"])(?<path>.*?)\2\,(?:\r?\n\s*)*(?<midware>([a-z\.\s]*\,\r?\n?\s*)*)\s?(?<anonFunc>(?:function)?\(req\,\s?res\)(?:.*?|\r?\n)*?\}\);)/gim
   const endpointMatch = [...fileText.matchAll(endpointRE)].reduce((obj, matchArr, ind) => {
     obj[ind] = matchArr.groups
     return obj;
   }, {});
 
   // Generate all Matches in the fileText that match express routers being mounted
-  const routerRE =  /(?<object>.*?)\.use\((['"])(?<route>.*?)\2\,\s?(?<label>.*?)\)/gi;
+  const routerRE =  /\.use\((['"])(?<route>.*?)\2\,\s?(?<label>.*?)\)/gi;
   const routerMatch = [...fileText.matchAll(routerRE)].reduce((obj, matchArr, ind) => {
     obj[ind] = matchArr.groups
     return obj;
