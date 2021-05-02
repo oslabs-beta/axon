@@ -33,12 +33,12 @@ describe('Electron appt tests', function() {
         return assert.strictEqual(title, 'axon');
       });
       
-      it('does not have the developer tools open', async () => {
-        const devToolsAreOpen = await app.client
-          .waitUntilWindowLoaded()
-          .browserWindow.isDevToolsOpened();
-        return assert.equal(devToolsAreOpen, false);
-      });
+    //   it('does not have the developer tools open', async () => {
+    //     const devToolsAreOpen = await app.client
+    //       .waitUntilWindowLoaded()
+    //       .browserWindow.isDevToolsOpened();
+    //     return assert.equal(devToolsAreOpen, false);
+    //   });
       
       
     

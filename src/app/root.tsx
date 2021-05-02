@@ -80,6 +80,7 @@ const RootComponent = () => {
          
             
             {/* {console.log(axonState.filelist)} */}
+
             <FileExport superTest={axonState.superTestCode} textInput={axonState.textInput} disableStatus={axonState.exportDisable} setProgressState={(newProgressState:any, progVal: any, checkImg: any) => 
               setAxonState({...axonState, progressText: newProgressState, progressVal: progVal, image: checkImg}) }/>
           </div>
