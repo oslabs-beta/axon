@@ -6,9 +6,7 @@
 */
 const st:any = {
 
-  defaultOpen: '/*\nBEFORE TESTING:\n\t- Install Jest and Supertest\n\t- Configure the application package.json test script\n*/\n\nconst request = require(\'supertest\');\nconst jest = require(\'jest\');\nconst server = \'https://localhost:', //append '<serverFilepath>'
-  localhostPrepend: '\'https://localhost:\'', // append port number
-  placeholderPort: '8080',
+  defaultOpen: '/*\nBEFORE TESTING:\n\t- Install Jest and Supertest\n\t- Configure the application package.json test script\n*/\n\nconst request = require(\'supertest\');\nconst jest = require(\'jest\');\nconst server = \`https://localhost:${', //append '<serverFilepath>'
   intTestDescription: 'Route integration',
   contentType: '\'Content-Type\'',
   html: ' /text\/html/',
@@ -37,6 +35,7 @@ const st:any = {
   comma: ',',
   period: '.',
   forwardSlash: '/',
+  backtick: '\`',
 
 };
 
@@ -47,7 +46,7 @@ export default function algoTwo( pathObject: any, currentFile: any, parentRoute:
   let supertestCode = '';
   // When the currentFile is the server file, write all of the default information for the supertest file
   if (parentRoute === '/'){
-    supertestCode = st.defaultOpen + st.placeholderPort + st.apos + st.semi + st.newline + st.newline + st.describe + st.intTestDescription + st.anonCB;
+    supertestCode = st.defaultOpen + pathObject.__portNumber__ + st.closeBrace + st.backtick + st.semi + st.newline + st.newline + st.describe + st.intTestDescription + st.anonCB;
   }
 
   // Write Endpoint Tests:  Traverse through Endpoints object and begin to write tests for each endpoint
