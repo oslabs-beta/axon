@@ -5,11 +5,7 @@ import FileExport from '@/app/components/fileExport';
 import logo from '../../assets/AxonLogoDotSize.png';
 import uploadFolder from '../../assets/folderImport.png';
 import createdTest from '../../assets/codeicon.png';
-<<<<<<< HEAD
-import algo from '../utils/automation';
-=======
 import superTestCode from '../utils/automation';
->>>>>>> 18e315adadd7a0639745e966b03e9fa6285424f9
 
 //example import
 // import algo1 from @app...
@@ -71,35 +67,18 @@ const RootComponent = () => {
           {/* Displays Create Button and Export Button. */}
           <div id="createExport">
 
-<<<<<<< HEAD
-            {/* <button id="createButton" onClick={() => setAxonState({...axonState, superTestCode: testFunc(axonState.fileList), progressText: "SuperTest files created"})} >Create</button>  */}
-        {/* <button id="createButton" onClick={() =>  {
-        algo(axonState.fileList)
-        .then(superTestCode => console.log(superTestCode))
-        .catch(err => console.log(err));
-        } } >Create</button> */}
-
-            <button disabled={axonState.createDisable} id="createButton" onClick={() => algo(axonState.fileList)
-            .then( superTestCode => {
-              console.log('output of the Algo when Sucessfull: ', algo, superTestCode);
-=======
           <button disabled={axonState.createDisable} id="createButton" onClick={() => superTestCode(axonState.fileList)
             .then( superTestCode => {
               console.log('output of the Algo when Sucessfull: ', superTestCode);
->>>>>>> 18e315adadd7a0639745e966b03e9fa6285424f9
               setAxonState(({...axonState, superTestCode: superTestCode, progressText: "Supertest files created", image:createdTest, progressVal: "66.66%", exportDisable: false, createDisable: true }))
             })
             .catch(superTestCode => {
               console.log('SuperTestCode from the Catch Block: ', superTestCode);
-<<<<<<< HEAD
-              })} >Create</button> 
-=======
           })} >
           Create
           </button> 
          
             
->>>>>>> 18e315adadd7a0639745e966b03e9fa6285424f9
             {/* {console.log(axonState.filelist)} */}
 
             <FileExport superTest={axonState.superTestCode} textInput={axonState.textInput} disableStatus={axonState.exportDisable} setProgressState={(newProgressState:any, progVal: any, checkImg: any) => 
