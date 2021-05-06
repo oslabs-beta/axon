@@ -1,4 +1,4 @@
-import SuperTestCodeBuilder from './SuperTestCodeBuilder';
+import SuperTestCodeBuilder from './utilityFunctions/SuperTestCodeBuilder';
 
 // Dictionary of phrases and strings that are reused to build the superTestCode
 const defaultStatements: any = {

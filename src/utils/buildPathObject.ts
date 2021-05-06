@@ -1,5 +1,5 @@
-import tempFindEndpointData from './tempFindEndpointData';
-import {tempIdentifyFileType} from './tempIdentifyFileType';
+import tempFindEndpointData from './utilityFunctions/tempFindEndpointData';
+import {tempIdentifyFileType} from './utilityFunctions/tempIdentifyFileType';
 
 // This Function will return a promise, that when resolved will return the pathObject
 export default function(fileList:any){
@@ -73,10 +73,8 @@ export default function(fileList:any){
      Promise.all(arrayOfPromises)
      .then(output => {
        resolve(pathObject);
-       console.log('RESOLVED: ', pathObject)
      })
      .catch(err => {
-      console.log('ERROR OCCURRED: ', pathObject)
        reject(pathObject);
      })
   });
