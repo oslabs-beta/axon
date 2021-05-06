@@ -10,12 +10,14 @@ export default function( fileList:any ){
     // When the PathObject is sucessfully Built
     .then( pathObject => {
       // Create superTestCode and return it from the promise
+      console.log('PATH OBJECT:', pathObject)
       const serverFile: string = pathObject[ pathObject.__serverFilePath__ ];
       const superTestCode = algoTwo(pathObject, serverFile);
       resolve(superTestCode)
     })
     // When there is an Error in the first Algorithm
     .catch(pathObject => {
+      console.log('ERROR OCCURRED: ', pathObject)
       // Attempt to create the superTest Code and return the result from the promise
       const serverFile: string = pathObject[ pathObject.__serverFilePath__ ];
       const superTestCode = algoTwo(pathObject, serverFile);

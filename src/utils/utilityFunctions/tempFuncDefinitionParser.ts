@@ -11,7 +11,7 @@ export default function(anonymousFunction: any){
   const responseInfo: any = {};
 
   // Match all patterns of a status being set in the function definition
-  const dotStatusRE = /(?:send)?status\((?<status>\d{3})/gim; // returns 
+  const dotStatusRE = /status\((?<status>\d{3})/gim; // returns 
 
   const statusMatch = [...anonymousFunction.matchAll(dotStatusRE)].reduce((obj, matchArr, ind) => {
       obj[ind] = matchArr.groups

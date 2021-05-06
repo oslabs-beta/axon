@@ -26,11 +26,12 @@ export default function(fileList:any){
        // When the file is read sucessfully
        .then(fileText => {
          // Identify the type of file
-         const fileType = tempIdentifyFileType(fileText);
+         const {fileType, portNumber} = tempIdentifyFileType(fileText);
 
          // When the type of file is a server, add the server path to the pathObject
          if (fileType === 'Server'){
              pathObject.__serverFilePath__  = fileList[i].webkitRelativePath;
+             pathObject.__portNumber__ = portNumber;
          }
 
          // Create a new File Object based on the file type
@@ -72,8 +73,10 @@ export default function(fileList:any){
      Promise.all(arrayOfPromises)
      .then(output => {
        resolve(pathObject);
+       console.log('RESOLVED: ', pathObject)
      })
      .catch(err => {
+      console.log('ERROR OCCURRED: ', pathObject)
        reject(pathObject);
      })
   });
