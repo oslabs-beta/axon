@@ -73,8 +73,10 @@ export default function(fileList:any){
      Promise.all(arrayOfPromises)
      .then(output => {
        resolve(pathObject);
+       console.log('RESOLVED: ', pathObject)
      })
      .catch(err => {
+      console.log('ERROR OCCURRED: ', pathObject)
        reject(pathObject);
      })
   });
