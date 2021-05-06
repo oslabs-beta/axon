@@ -1,20 +1,24 @@
 export function tempIdentifyFileType(data:any) :any{ 
-  const dotListenRE = /\.listen/gi; 
+  const dotListenRE = /\.listen\((?<port>.*?)(?=,|\))/i; 
   const listenMatch = data.match(dotListenRE);
-
+  
+  let portNumber;
+  if(listenMatch){
+    portNumber = listenMatch.groups.port;
+  }
 
   const dotRouterRE = /express\.Router\(\)/gi; 
   const routerMatch = data.match(dotRouterRE);
   
 
-  let result = "";
+  let fileType = "";
   if (listenMatch === null && routerMatch === null) 
-    result = 'Other';
-  else if(Array.isArray(listenMatch) && listenMatch.includes('.listen')) 
-    result = 'Server';
+    fileType = 'Other';
+  else if(Array.isArray(listenMatch) && portNumber) // .includes -> portNumber !== undefined ? check logic  
+    fileType = 'Server';
   else if (Array.isArray(routerMatch) && routerMatch.includes('express.Router()')) 
-    result = 'Router';
+    fileType = 'Router';
 
-  return result;
+  return {fileType, portNumber: portNumber ? portNumber : null};
 }
 
