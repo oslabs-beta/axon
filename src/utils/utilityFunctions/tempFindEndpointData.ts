@@ -1,7 +1,7 @@
 import tempResolvePath from './tempResolvePath';
 import tempFuncDefinitionParser from './tempFuncDefinitionParser';
 const AbstractSyntaxTree = require('abstract-syntax-tree')
-// const { parse, find } = require('abstract-syntax-tree')
+
 
 
 const expressMethods: any = {
