@@ -1,49 +1,59 @@
-// * {
-//     color: rgb(0, 255, 255);
-//     background-color: black
-// }
 
-* {
-    font-family: 'Arial Narrow', Arial, sans-serif;
+/* --------------------------------- GLOBAL STYLING ---------------------------------*/
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content:center;
+  width: 100vw;
 }
 
-
 body {
-  display: flex;
+  display: flex;  
   justify-content: center;
   padding: 20px;
   align-content: space-between;
   color: black;
   background-color: #f4901ec2
-
 }
 
+button:hover{
+  cursor: pointer;
+}
+
+
+/* --------------------------------- HEADER ---------------------------------*/
 header {
   display:flex;
   justify-content: center;
   img {
-    height: 100px;
+    height: 150px;
     text-align: center;
   }
-
 }
 
+/* ---------------------------------UPLOADING BOX STYLING------------------------------------------*/
 .contentBox {
   // background-color: lightgoldenrodyellow;
   display: flex;
   flex-direction: column;
   align-content: space-between;
   justify-content: center;
-  width: 500px;
-  border: solid black 2px;
+  width: 520px;
+  border: solid #00000047 1px;
+  border-radius: 3px;
+  margin: 0px 50px 0px 50px;
+  box-shadow: 4px 4px 6px black;
+  background-color: #faebd7c4;
 }
 
+
 #progressDisplay {
+  font-family: 'Arial Narrow', Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-//   font-size: 10px;
+  //   font-size: 10px;
   flex-direction: column;
   border-bottom: solid black 2px;
   h1 {
@@ -53,12 +63,17 @@ header {
     //               1px -1px 0 #000,
     //              -1px -1px 0 #000;
   }
-
+  
 }
-// #progressBar {
-//   width: 300px;
-//   height: 40px;
-// }
+
+#progressbarNew>div {
+  background-color: #f16a39;
+  // width: 40%;
+  /* Adjust with JavaScript */
+  height: 20px;
+  border-radius: 10px;
+}
+
 #progressbarNew {
   background-color: black;
   border-radius: 13px;
@@ -66,15 +81,7 @@ header {
   padding: 3px;
   width: 300px;
   margin-bottom: 10px;
- 
-}
-
-#progressbarNew>div {
-  background-color: orange;
-  // width: 40%;
-  /* Adjust with JavaScript */
-  height: 20px;
-  border-radius: 10px;
+  
 }
 #import {
   // background-color: lightcyan;
@@ -91,26 +98,18 @@ header {
 
 }
 
-#createExport {
-  // background-color: lightpink;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  
-}
 
-
+// Import Button
 .custom-file-input {
   color: transparent;
   width: 168px;
   border-radius: 3px;
-
+  
   &:hover{
   box-shadow: 2px 2px black;
-  }
-  // padding-right: 100px;
-  // background-color: lightgray;
+}
+// padding-right: 100px;
+// background-color: lightgray;
   // justify-self: center;
   &:-webkit-file-upload-button {
     visibility: hidden;
@@ -121,7 +120,7 @@ header {
   }
   &:before {
     content: 'Import server folder';
-    color: cyan;
+    color: #f16a39;
     display: inline-block;
     background: black;
     border: 1px solid #999;
@@ -141,6 +140,7 @@ header {
     
   }
 
+
   &:hover:before {
     border-color: black;
     color:#00E0E8;
@@ -150,14 +150,14 @@ header {
     outline: 0;
     border-radius: 3px;
     box-shadow: -1px -1px black;
-   
+    
     &:before {
-    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
-    color: #666666;
-    }
+      background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+    color: #f16a39;
   }
 }
-    
+}
+
 #hiddenImport {
   margin: 0 auto;
   height:40px;
@@ -166,11 +166,11 @@ header {
 
 @mixin button {
   padding: 0;
-  height: 30px;
-  width: 100px;
+  height: 35px;
+  width: 120px;
   margin: 0px 20px 0px 20px;
   background-color: black;
-  color: cyan;
+  color: #f16a39;
   font-weight: 700;
   font-size: 14px;
   border: 1px solid black;
@@ -182,7 +182,7 @@ header {
   &:disabled {
     border: 1px solid #999999;
     background-color: #cccccc;
-    color: #666666;
+    color: #e69b7f;
   }
   &:enabled:hover {
     background-color: white;
@@ -205,17 +205,67 @@ header {
 }
 
 
+/* ----------------------------------MONACO BOX STYLING------------------------------------------*/
+
+.MonacoBox {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 50px 0px 50px;
+  height: 746px;
+  width: 600px;
+  border: solid #00000047 1px;
+  border-radius: 3px;
+  box-shadow: 4px 4px 6px black;
+  // align-items: center;
+  background-color: #faebd7c4;
+  // font-family: 'Times New Roman', Times, serif;
+  
+}
+
+#tabs {
+  button{
+    font-size: 20px;
+    padding: 10px 20px 10px 20px;   
+    border-radius: 0;
+    border: none; 
+  }
+
+  button:hover{
+    cursor: pointer;
+    color:blanchedalmond;
+    background-color: black;
+  }
+}
+
+.active-tab{
+  background: #1e1e1e;
+  color: rgb(241, 245, 210);
+}
+
+#createExport {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  img {
+    padding-top: 1px;
+    height: 25px;
+    width: auto;
+  }
+}
+
 #exportbtn {
   @include button;
 }
 
-
-#bottomBox {
+.bottomBox {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  flex-direction: row;
   align-items: center;
   margin-top: 10px;
   margin-bottom: 10px;
+  vertical-align: middle;
   #fname {
     margin-bottom: 10px;
     border-width: 0px;
@@ -224,6 +274,7 @@ header {
     font-size: 14px;
     font-weight: 600;
     border-radius: 3px;
+    margin: 2px;
     &:focus {
       outline: none;
     }

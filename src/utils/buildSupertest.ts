@@ -85,7 +85,7 @@ export default function generateSuperTestCode(pathObject: any): string{
       
       // Close the Describe block for the current route
       superTestCode.currentTextIndentation = 4;
-      superTestCode.add('});');
+      superTestCode.add('});\n');
       // superTestCode.add('', 'left');
     }
 
