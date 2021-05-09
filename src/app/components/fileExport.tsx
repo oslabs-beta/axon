@@ -7,16 +7,16 @@ const FileExport = (props:any) => {
 
 
   // global variable to store prop that carries returned supertest from main algorithm
-  let text = props.superTest;
+  let text = props.fileType ? props.superTest : props.postmanCollection;
   // global variable to hold exported file name
   let filename:any;
  // conditional statement to check if user left input field blank
   if(props.textInput === ""){
       // if input field empty filename is supertest.js
-      filename = "superTest.js"
+      filename = props.fileType ? "superTest.js" : "postmanCollection.json"
     }else{
       // exported file gets saved as inputed filename
-      filename = props.textInput + ".js";
+      filename = props.fileType ? props.textInput + ".js" : props.textInput + ".json";
     }
 
   // function that gets called after invoking export button to change current state

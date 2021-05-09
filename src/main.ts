@@ -6,8 +6,8 @@ import * as path from "path";
 
 const createWindow = (): void => {
     let currentWindow = new BrowserWindow({
-      width: 1000,
-      height: 800,
+      width: 1300,
+      height: 950,
       webPreferences: {
         nodeIntegration: true
       }
