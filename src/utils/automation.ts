@@ -1,5 +1,5 @@
 import algoOne from "./buildPathObject";
-import algoTwo from "./buildSupertest";
+import generateSuperTestCode from "./buildSupertest";
 
 // This is the main Algorithm that will generate the superTest Code
 export default function( fileList:any ){
@@ -10,9 +10,9 @@ export default function( fileList:any ){
     // When the PathObject is sucessfully Built
     .then( pathObject => {
       // Create superTestCode and return it from the promise
-     
+      console.log('PATH OBJECT: ', pathObject)
       const serverFile: string = pathObject[ pathObject.__serverFilePath__ ];
-      const superTestCode = algoTwo(pathObject, serverFile);
+      const superTestCode = generateSuperTestCode(pathObject, serverFile);
       resolve(superTestCode)
     })
     // When there is an Error in the first Algorithm
@@ -20,10 +20,9 @@ export default function( fileList:any ){
       
       // Attempt to create the superTest Code and return the result from the promise
       const serverFile: string = pathObject[ pathObject.__serverFilePath__ ];
-      const superTestCode = algoTwo(pathObject, serverFile);
+      const superTestCode = generateSuperTestCode(pathObject, serverFile);
       reject(superTestCode)
     })
   })
 }
-
 
