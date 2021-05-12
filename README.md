@@ -32,7 +32,7 @@ Axon desktop application is available to install for Mac or Windows operating sy
 
 Open your Axon Application to be greeted with a beautiful layout!
 
-  ![Logo](https://imgur.com/LoaJbqy.png)
+  ![Alt Text](https://i.imgur.com/KedY2z8.gif)
 
   ### Step 1
 
