@@ -30,7 +30,7 @@ describe('Electron appt tests', function() {
 
     it('has the correct title', async () => {
         const title = await app.client.getTitle();
-        return assert.strictEqual(title, 'axon');
+        return assert.strictEqual(title, 'Axon');
       });
       
     //   it('does not have the developer tools open', async () => {
