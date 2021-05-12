@@ -1,8 +1,9 @@
-import SuperTestCodeBuilder from './SuperTestCodeBuilder';
+import SuperTestCodeBuilder from './utilityFunctions/SuperTestCodeBuilder';
 
 // Dictionary of phrases and strings that are reused to build the superTestCode
 const defaultStatements: any = {
-  defaultOpen: '/*\nBEFORE TESTING:\n\t- Install Jest and Supertest\n\t- Configure the application package.json test script\n*/\n\nconst request = require(\'supertest\');\nconst jest = require(\'jest\');\nconst server = \`https://localhost:${', //append '<serverFilepath>'
+  defaultOpen: '/*\nBEFORE TESTING:\n\t- Install Jest and Supertest\n\t- Configure the application package.json test script\n*/\n\nconst request = require(\'supertest\');', //append '<serverFilepath>'
+  server: 'const server = \`https://localhost:${',
   intTestDescription: 'Route integration',
   contentType: '\'Content-Type\'',
   html: ' /text\/html/',
@@ -38,7 +39,7 @@ export default function generateSuperTestCode(pathObject: any): string{
 
   // Add Heading to the SuperTestFile
   superTestCode.add(defaultOpen);
-
+  superTestCode.add(defaultStatements.server + pathObject.__portNumber__ + '}\`;\n')
   // Write Outter-Most Describe Block
   superTestCode.add(describe + intTestDescription + anonCB, 'right');
 
@@ -52,7 +53,6 @@ export default function generateSuperTestCode(pathObject: any): string{
     // Traverse through Endpoints object and begin to write tests for each endpoint
     for (let route in currentFile.endpoints){
       const currentRoute: string =  route === parentRoute ? route : parentRoute + route;
-
       // Write the Describe block for the current route
       superTestCode.add(describe + currentRoute + anonCB, 'right');
 
@@ -79,12 +79,14 @@ export default function generateSuperTestCode(pathObject: any): string{
         superTestCode.generateSuperTest(reqMethod, endpointData);
 
         // Close the It Block and Describe block for the specific supertest
-        superTestCode.add('\'});', 'left');
-        superTestCode.add('\'});', 'left');
+        superTestCode.add('});');
+        superTestCode.add('});', 'left');
       }
       
       // Close the Describe block for the current route
-      superTestCode.add('\'});', 'left');
+      superTestCode.currentTextIndentation = 4;
+      superTestCode.add('});\n');
+      // superTestCode.add('', 'left');
     }
 
     // Traverse through the Routers object and write tests for each imported router

@@ -1,6 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const { loader } = require("@monaco-editor/react");
 
+loader.config({ paths: { vs: "../path-to-monaco" } });
+ 
 module.exports = {
   entry: './src/renderer.tsx',
   target: 'electron-renderer',
@@ -14,15 +17,16 @@ module.exports = {
     alias: {
       ['@']: path.resolve(__dirname, 'src')
     },
-    extensions: ['.tsx', '.ts', '.js', '.jsx'], /* maybe .jsx?? */
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
     mainFields: ["main", "module", "browser"],
   },
   module: {
     rules: [
+
       {
         test: /\.ts(x?)$/,
         include: /src/,
-        // use: [{ loader: 'ts-loader' }],
+    
         use: "babel-loader",
       },
       {
@@ -36,7 +40,11 @@ module.exports = {
           'css-loader',
           'sass-loader',
         ],
-      }
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
     ]
   },
   output: {
@@ -46,6 +54,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html'
-    })
+    }),
+
   ]
 };
