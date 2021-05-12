@@ -1,24 +1,20 @@
-// buildPathObject result set in state
-// pull path object from state 
-// pass to Postman or Supertest
-
-import { InferencePriority } from "typescript";
-
-// buildPathObject(fileList)
-//  .then( pathObject => set state with it here)
-// buildSuperTest( axonState.pathObject)
-
-
-
-// ------------------------------------------------------
-
-
-// import SuperTestCodeBuilder from './utilityFunctions/SuperTestCodeBuilder';
-
-
+/** 
+@param pathObject from state 
+function will build Postman Collection for each endpoint in the server file
+and recurse for any router files imported into the server file
+*/
 export default function generatePostmanCollection(pathObject: any): string{
 
-  const postmanCollection = {
+  // isolate server file as the root
+  const serverFile = pathObject[ pathObject.__serverFilePath__];
+
+  // check if port detected is a number for use in collection variables
+  // if a variable reference was captured use default
+  const portNumber = parseInt(pathObject.__portNumber__) + "" === "NaN" ? 8080 : pathObject.__portNumber__;
+
+  // set up default collection schema
+  // establish port variable for added flexibility in development
+  const postmanCollection: any = {
     "info": {
 	  "name": "New Collection",
 	  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -49,39 +45,27 @@ export default function generatePostmanCollection(pathObject: any): string{
 	"variable": [
 	  {
 		"key": "port",
-		"value": `${portNumber}`
+		"value": portNumber
 	  }
 	],
   }
-  // Find the Server File within the 'pathObject' as the starting File
-  const serverFile = pathObject[ pathObject.__serverFilePath__];
-
-  // Add Heading to the SuperTestFile
-  const portNumber = pathObject.__portNumber__;
-  const hostName = 'localhost:';
-
-  /*
-    This helper function will generate SuperTestCode on the current files endpoints.
-    It will recursively go to any imported routers and generate the superTestCode for
-    their endpoints as well.
-  */
+  
+    // utility function to generate routes and their endpoints on the current file
+	// recurses for any imported routers
   function extractEndpointData(currentFile: any, parentRoute = '/'): void{
     
-    // Traverse through Endpoints object and begin to write tests for each endpoint
+    // traverse through endpoints object for paths and respective methods
     for (let route in currentFile.endpoints){
-      const currentRoute: string = route === parentRoute ? route : parentRoute + route;
-
-      // Traverse through the current endpoint array 
+	  const currentRoute: string =  parentRoute === '/' || route === parentRoute ? route : parentRoute + route;
+	
+      // iterate through current endpoint array 
       for(let endpointArray of currentFile.endpoints[route] ){
-        // Store relevant endpoint information from endpoint array into variables
-        const reqMethod = `\"${endpointArray[0].toUpperCase()}\"`
-        
-		// currentRoute.split('/')
-		postmanCollection.item.push();
-		const tempName = {
-			"name": `${currentRoute}`,
+        // store transformed request type for addition to requestItem
+        const reqMethod = endpointArray[0].toUpperCase()
+		const requestItem = {
+			"name": currentRoute,
 			"request": {
-			  "method": `${reqMethod}`,
+			  "method": reqMethod,
 			  "header": [],
 			  "url": {
 				"raw": "localhost:{{port}}" + currentRoute,
@@ -89,40 +73,43 @@ export default function generatePostmanCollection(pathObject: any): string{
 				  "localhost"
 				  ],
 				"port": "{{port}}",
-				"path": variable,
-				  
 				}
 			},
-			  "response": []
-		  }
+			"response": []
+		};
+		  
+		// Postman schema requires the separation of endpoint directories spread over an array
+		// regex to remove leading forward slash so split method does not create empty string at index zero
+		const pathArray = currentRoute.replace(/^\/+/, '').split('/');
+		requestItem.request.url.path = pathArray;
+		// push new request to array on item property
+		postmanCollection.item.push(requestItem);
       }
       
     }
 
-    // Traverse through the Routers object and write tests for each imported router
+    // iterate through routers object to grab endpoints in appropriate file
     for (let route in currentFile.routers){
-      // Find the imported File in the pathObject
+      // locate router file in the pathObject
       const currentRouteArray = currentFile.routers[route];
       const routerName = currentRouteArray[0][1];
       const importedFilePath = currentFile.imports[routerName] + '.js';
       const importedFile = pathObject[importedFilePath];
 
-      // Skip the file if it is not a router file
+      // skip if does not exist in server directory
       if (importedFile === undefined){
         continue;
       }
 
-      // Call function recursively to build superTest code for the imported router file
+      // recursive call to add methods for the imported router file
       extractEndpointData(importedFile, parentRoute === '/' ? route : parentRoute + route);
     }  
   }
 
-  // Build the Super Test Code
+  // build the Postman collection
   extractEndpointData(serverFile, '/');
 
-  // Return the Collection
-  // return 
+  // return collection
+  return JSON.stringify(postmanCollection, null, 2);
 }
 
-// postmanTemplate.item.push()[i] -> object
-// if (typeof portNumber !== 'number') portNumber = 8080

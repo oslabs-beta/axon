@@ -7,7 +7,8 @@ import uploadFolder from '../../assets/folderImport.png';
 import createdTest from '../../assets/codeicon.png';
 import postmanLogo from '../../assets/postmanLogoText.png'
 import superTestCode from '../utils/automation';
-import buildSuperTest from '../utils/buildSupertest'
+import buildSuperTest from '../utils/buildSupertest';
+import buildPostmanCollection from '../utils/buildPostman'
 import MonacoEditor from "@monaco-editor/react";
 
 
@@ -68,7 +69,7 @@ const RootComponent = () => {
 
   // Will update the State so that the Postman code shows in the Monaco Editor
   const showPostmanCode = () => {
-    if (!axonState.howPostmanCode){
+    if (!axonState.showPostmanCode){
       setAxonState({
         ...axonState,
         showPostManCode: true,
@@ -118,7 +119,6 @@ const RootComponent = () => {
   const onCreateButtonClick = () => {
     // Create the SuperTest Code
     const superTestCode = buildSuperTest(axonState.pathObject);
-    console.log(superTestCode);
 
     // Update the State with the Super test code
     setAxonState(({...axonState,
@@ -135,7 +135,8 @@ const RootComponent = () => {
 
   const onPostmanButtonClick = () => {
     // Create json string
-    const postmanCollections = `{"hey": 3, "hey": 5}`;
+    const postmanCollections = buildPostmanCollection(axonState.pathObject);
+
 
     // Update the State with the Postman Collections
     setAxonState(({...axonState,

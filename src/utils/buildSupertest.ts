@@ -3,10 +3,10 @@ import SuperTestCodeBuilder from './utilityFunctions/SuperTestCodeBuilder';
 // Dictionary of phrases and strings that are reused to build the superTestCode
 const defaultStatements: any = {
   defaultOpen: '/*\nBEFORE TESTING:\n\t- Install Jest and Supertest\n\t- Configure the application package.json test script\n*/\n\nconst request = require(\'supertest\');', //append '<serverFilepath>'
-  server: 'const server = \`https://localhost:${',
+  server: 'const server = \`http://localhost:${',
   intTestDescription: 'Route integration',
   contentType: '\'Content-Type\'',
-  html: ' /text\/html/',
+  html: ' /text\\/html/',
   json: ' /json/',
   describe: 'describe(\'', // append '<path>' || '<reqMethod>.toUpperCase()'
   it: 'it(\'',
@@ -52,7 +52,7 @@ export default function generateSuperTestCode(pathObject: any): string{
     
     // Traverse through Endpoints object and begin to write tests for each endpoint
     for (let route in currentFile.endpoints){
-      const currentRoute: string =  route === parentRoute ? route : parentRoute + route;
+      const currentRoute: string =  parentRoute === '/' || route === parentRoute ? route : parentRoute + route;
       // Write the Describe block for the current route
       superTestCode.add(describe + currentRoute + anonCB, 'right');
 
@@ -104,12 +104,13 @@ export default function generateSuperTestCode(pathObject: any): string{
 
       // Call function recursively to build superTest code for the imported router file
       createTestsForEndpoints(importedFile, parentRoute === '/' ? route : parentRoute + route, superTestCode);
-    }  
+    }
   }
 
   // Build the Super Test Code
   createTestsForEndpoints(serverFile, '/', superTestCode);
-
+  // Close the outer describe block
+  superTestCode.add('});\n');
   // Return the Super Test Code String
   return superTestCode.buildString();
 }
