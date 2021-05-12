@@ -13,11 +13,7 @@ const createWindow = (): void => {
       }
     });
     console.log(isDev);
-    // win.loadURL(
-    //   isDev
-    //     ? 'http://localhost:9000'
-    //     : `file://${app.getAppPath()}/index.html`,
-    // );
+
     if (process.env.NODE_ENV === "development") {
       currentWindow.loadURL("http://localhost:9000");
       currentWindow.webContents.openDevTools();
