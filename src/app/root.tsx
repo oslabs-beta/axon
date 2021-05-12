@@ -5,9 +5,9 @@ import FileExport from '@/app/components/fileExport';
 import options from "./options";
 import uploadFolder from '../../assets/folderImport.png';
 import createdTest from '../../assets/codeicon.png';
-import postmanLogo from '../../assets/postmanLogoText.png'
-import superTestCode from '../utils/automation';
-import buildSuperTest from '../utils/buildSupertest'
+import postmanLogo from '../../assets/postmanLogoText.png';
+import buildSuperTest from '../utils/buildSupertest';
+import buildPostmanCollection from '../utils/buildPostman';
 import MonacoEditor from "@monaco-editor/react";
 
 
@@ -18,10 +18,16 @@ const RootComponent = () => {
   /*
   Welcome to Axon!
   Upload the Server folder of an Express Application and 
-  create your SuperTest file or Postman Collection!
+  create your SuperTest file or Postman Collection! 
   */
  `;
- const df = '//new line'
+ const defaultPostmanTab = `
+ /* 
+ Axon builds Postman Collections as well!
+ Make sure to export from axon, then import your collection into Postman.
+ This will autogenerate your test document APIs, and save you some time (:
+ */
+ `;
  
  // Using Hooks to set our state
  const [axonState, setAxonState] = useState <any | undefined> ({
@@ -38,22 +44,13 @@ const RootComponent = () => {
    
    // State Related to the Content of the Monaco Editor
    superTestCode: defaultInstructions,
-   postmanCollections: df,
+   postmanCollections: defaultPostmanTab,
    showPostManCode: false,
    showSuperTestCode: true,
    
    // Name of the File to Export
    textInput: ''
   });
-
-  // TEST
-  useEffect(() => {
-
-    console.log('Current PostMan State: ', axonState.postmanCollections);
-    console.log('Current SuperTestCode State: ', axonState.superTestCode);
-
-  }, [axonState.superTestCode, axonState.postmanCollections])
-
   
   // Will update the State so that the super test code shows in the Monaco Editor
   const showSuperTestCode = () => {
@@ -68,7 +65,7 @@ const RootComponent = () => {
 
   // Will update the State so that the Postman code shows in the Monaco Editor
   const showPostmanCode = () => {
-    if (!axonState.howPostmanCode){
+    if (!axonState.showPostmanCode){
       setAxonState({
         ...axonState,
         showPostManCode: true,
@@ -78,22 +75,17 @@ const RootComponent = () => {
   }
 
   const updateMonacoEditor = (monacoText: any): void => {
-    console.log('Monico Editor has been updated');
     
     if (axonState.showPostManCode){
-      console.log('MonacoTextInside:',monacoText)
       setAxonState({
         ...axonState,
         postmanCollections: monacoText, 
       });
-      // console.log('postmanTextState:',axonState.postmanCollections)
     }else if(axonState.showSuperTestCode){
-      // console.log('MonacoText:',monacoText)
       setAxonState({
         ...axonState,
         superTestCode: monacoText,
       });
-      // console.log('postmanTextState:',axonState.postManCollections)
     }
   }
 
@@ -118,7 +110,6 @@ const RootComponent = () => {
   const onCreateButtonClick = () => {
     // Create the SuperTest Code
     const superTestCode = buildSuperTest(axonState.pathObject);
-    console.log(superTestCode);
 
     // Update the State with the Super test code
     setAxonState(({...axonState,
@@ -135,7 +126,8 @@ const RootComponent = () => {
 
   const onPostmanButtonClick = () => {
     // Create json string
-    const postmanCollections = `{"hey": 3, "hey": 5}`;
+    const postmanCollections = buildPostmanCollection(axonState.pathObject);
+
 
     // Update the State with the Postman Collections
     setAxonState(({...axonState,

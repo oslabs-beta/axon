@@ -44,7 +44,6 @@ header {
 
 /* ---------------------------------UPLOADING BOX STYLING------------------------------------------*/
 .contentBox {
-  // background-color: lightgoldenrodyellow;
   display: flex;
   flex-direction: column;
   align-content: space-between;
@@ -65,23 +64,16 @@ header {
   justify-content: center;
   align-items: center;
   text-align: center;
-  //   font-size: 10px;
   flex-direction: column;
   border-bottom: solid black 2px;
   h1 {
     font-size: 25px;
-    // text-shadow: -1px 1px 0 #000,
-    //               1px 1px 0 #000,
-    //               1px -1px 0 #000,
-    //              -1px -1px 0 #000;
   }
   
 }
 
 #progressbarNew>div {
   background-color: #d7e9fa;
-  // width: 40%;
-  /* Adjust with JavaScript */
   height: 20px;
   border-radius: 10px;
 }
@@ -89,14 +81,12 @@ header {
 #progressbarNew {
   background-color: black;
   border-radius: 13px;
-  /* (height of inner div) / 2 + padding */
   padding: 3px;
   width: 300px;
   margin-bottom: 10px;
   
 }
 #import {
-  // background-color: lightcyan;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -120,9 +110,6 @@ header {
   &:hover{
   box-shadow: 2px 2px black;
 }
-// padding-right: 100px;
-// background-color: lightgray;
-  // justify-self: center;
   &:-webkit-file-upload-button {
     visibility: hidden;
   }
@@ -143,7 +130,6 @@ header {
     white-space: nowrap;
     -webkit-user-select: none;
     cursor: pointer;
-    // text-shadow: 2px 2px black;
     width: 130px;
     font-weight: 700;
     font-size: 14px;
@@ -173,7 +159,6 @@ header {
 #hiddenImport {
   margin: 0 auto;
   height:40px;
-  // display: inline-flex;
 }
 
 @mixin button {
@@ -190,7 +175,6 @@ header {
   outline: none;
   &:focus {
     outline: none;
-    // background-color: yellow;
   }
   &:disabled {
     border: 1px solid #777777;
@@ -210,7 +194,6 @@ header {
     outline: none;
     &:focus {
       outline: none;
-      // background-color: yellow;
     }
   }
 }
@@ -231,9 +214,7 @@ header {
   border: solid #00000047 1px;
   border-radius: 3px;
   box-shadow: 4px 4px 6px black;
-  // align-items: center;
   background-color: #b0ddfdb2;
-  // font-family: 'Times New Roman', Times, serif;
   z-index: 1;
 }
 

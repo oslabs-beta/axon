@@ -36,6 +36,11 @@ class SuperTestCodeBuilder extends StringBuilder{
     if (endpointInfo.route){
       this.add(`.${httpMethod}(\'${endpointInfo.route}\')`);
     }
+
+    // Check if .send() method is needed, add if true
+    if (httpMethod !== 'get'){
+      this.add('// .send({enter expected request body})');
+    }
     
     // Add the Expected Content Type
     if (endpointInfo.contentType){
