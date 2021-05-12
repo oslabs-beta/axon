@@ -1,5 +1,4 @@
 import React from 'react';
-// import './app.scss';
 import RootComponent from '@/app/root';
 import logo from '../../assets/AxonFinalLogo.png';
 import Particles from 'particlesjs'
