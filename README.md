@@ -2,7 +2,7 @@
 
 
 ![Logo](https://imgur.com/pUUqjab.png)
-![til](gifs/FullDemo.gif)
+
 
  Axon aids developers with Express.js based applications to autogenerate integration tests and Postman Collections by extracting RESTful API endpoints without the need to write any code. Simply import your server folder and Axon will do the hard work for you!   
 
@@ -33,38 +33,38 @@ Axon desktop application is available to install for Mac or Windows operating sy
 
 Open your Axon Application to be greeted with a beautiful layout!
 
-  ![Alt Text](https://i.imgur.com/KedY2z8.gif)
+  ![Alt Text](gifs/FrontPage.gif)
 
   ### Step 1
 
 Click on the "Import server folder" button, you will be redirected to your file folders. Choose the server folder from your Express based application. 
 
-  ![Logo](https://imgur.com/1t5quV4.png)
+  ![til](gifs/ImportServerFolder.gif)
 
   ### Step 2
 
 Click on the "SuperTest" button to autogenerate your integration test from the API endpoints located in your server files. 
 
-  ![Logo](https://imgur.com/ywnmG0g.png)
+  ![til](gifs/CreateSupertest.gif)
 
   ### Step 3
 
 Click on the "POSTMAN" button to create a postman collection that you can import into Postman and autogenerate manual tests.
   
-  ![Logo](https://imgur.com/RzzsQlP.png)
+  ![til](gifs/CreatePostmanCollection.gif)
 
   ### Step 4
 
 Enter your file name for either your supertest or postman collection, make sure you are in the right tab before clicking on "Export" to download your files into your computer.
 
- ![Logo](https://imgur.com/PhxwbyR.png)
+ ![til](gifs/ExportTestFile.gif)
  
  
 ## How To Import Postman Collection into Postman
 
 After exporting your postman collection from Axon and saving it into your computer, open postman, click on the collections tab to the left of the screen, press the import button, then on the pop-up window drag and dropt or simply upload your postman collection to autogenerate your enpoint tests.
 
-   ![Logo](https://imgur.com/WtX2bhN.png)
+   ![til](gifs/PostmanDemo.gif)
    
    
 
