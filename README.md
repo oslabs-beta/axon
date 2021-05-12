@@ -2,6 +2,9 @@
 
 
 ![Logo](https://imgur.com/pUUqjab.png)
+<br>
+<img src="https://i.imgur.com/KedY2z8.gif" width="650">
+<br>
 
  Axon aids developers with Express.js based applications to autogenerate integration tests and Postman Collections by extracting RESTful API endpoints without the need to write any code. Simply import your server folder and Axon will do the hard work for you!   
 
