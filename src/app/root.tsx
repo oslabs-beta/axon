@@ -6,6 +6,7 @@ import options from "./options";
 import uploadFolder from '../../assets/folderImport.png';
 import createdTest from '../../assets/codeicon.png';
 import postmanLogo from '../../assets/postmanLogoText.png';
+import postmanIcon from '../../assets/postmanIcon.png';
 import buildSuperTest from '../utils/buildSupertest';
 import buildPostmanCollection from '../utils/buildPostman';
 import MonacoEditor from "@monaco-editor/react";
@@ -17,6 +18,15 @@ const RootComponent = () => {
   const defaultInstructions = `
   /*
   Welcome to Axon!
+
+     __      ___   ___    ____   .__     __. 
+    /    \\      \\   \\   /    /   /  __   \\  |    \\   |   | 
+   /  ^   \\      \\   V   /    |   |  |    | |     \\  |   | 
+  /  /_\\   \\       >   <     |   |  |    | |            | 
+ /   __    \\     /   ^   \\   |   '--'    | |     |\\     | 
+/__/     \\__\\ /__/ \\__\\  \\____ /  |__|  \\__| 
+
+
   Upload the Server folder of an Express Application and 
   create your SuperTest file or Postman Collection! 
   */
@@ -132,7 +142,7 @@ const RootComponent = () => {
     // Update the State with the Postman Collections
     setAxonState(({...axonState,
       progressText: "Postman Collection successfully created", 
-      image:createdTest, 
+      image: postmanIcon, 
       postmanCollections: postmanCollections,
       progressVal: "66.66%", 
       exportDisable: false, 
@@ -192,8 +202,8 @@ const RootComponent = () => {
 
       <div className="MonacoBox">
         <div id="tabs">
-          <button className={axonState.showSuperTestCode ? 'active-tab' : 'null'} onClick={showSuperTestCode}>SuperTest</button>
-          <button className={axonState.showPostManCode ? 'active-tab' : 'null'} onClick={showPostmanCode}>Postman</button>
+          <button className={axonState.showSuperTestCode ? 'active-tab' : 'unactive-tab'} onClick={showSuperTestCode}>SuperTest</button>
+          <button className={axonState.showPostManCode ? 'active-tab' : 'unactive-tab'} onClick={showPostmanCode}>Postman</button>
         </div>
         <MonacoEditor
           height="650px"
