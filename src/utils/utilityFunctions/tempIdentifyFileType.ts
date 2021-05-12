@@ -14,7 +14,7 @@ export function tempIdentifyFileType(data:any) :any{
   let fileType = "";
   if (listenMatch === null && routerMatch === null) 
     fileType = 'Other';
-  else if(Array.isArray(listenMatch) && portNumber) // .includes -> portNumber !== undefined ? check logic  
+  else if(Array.isArray(listenMatch) && portNumber)
     fileType = 'Server';
   else if (Array.isArray(routerMatch) && routerMatch.includes('express.Router()')) 
     fileType = 'Router';

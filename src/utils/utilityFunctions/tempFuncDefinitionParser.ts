@@ -18,14 +18,13 @@ export default function(anonymousFunction: any){
       return obj;
   }, {});
 
-  // When a status is matched
+  // When a status is matched store code
   if (Object.keys(statusMatch).length){
     responseInfo['status'] = statusMatch[0]['status'];
   }
-  
 
   // Match all patterns of JSON being sent via the ResponseObject.json() method
-  const dotJsonRE = /\.json\((?<jsonObj>.*?)\)/gim;
+  const dotJsonRE = /\.json\(/gim;
 
   const jsonMatch = [...anonymousFunction.matchAll(dotJsonRE)].reduce((obj, matchArr, ind) => {
       obj[ind] = matchArr.groups
@@ -37,40 +36,52 @@ export default function(anonymousFunction: any){
       responseInfo['content-type'] = 'json';
   }
 
-  // Matches all patterns of the send() method being invoked from the Response Obje
-  const dotSendRE = /send(?:file)?\((?<sendContent>.*?)\)/gim;
+  // Matches all patterns of the send() method being invoked from the Response Object
+  const dotSendRE = /\.send\(\s?(?<sendContent>((true|false)|['"`{\[]))/gim;
 
   const sendMatch = [...anonymousFunction.matchAll(dotSendRE)].reduce((obj, matchArr, ind) => {
     obj[ind] = matchArr.groups
     return obj;
   }, {});
 
-  // When a .send method is matched
-  if (Object.keys(sendMatch).length){
+  const dotSendFileRE = /\.sendFile\(\s?(?<sendContent>.*?)\s?\)/gim;
 
+    const sendFileMatch = [...anonymousFunction.matchAll(dotSendFileRE)].reduce((obj, matchArr, ind) => {
+      obj[ind] = matchArr.groups
+      return obj;
+    }, {});
+   
+  if(Object.keys(sendFileMatch).length){
     // Case: The content sent is a file
-    if(/(\.html|\.js)/.test(sendMatch[0].sendContent)){
+    if(/(\.html|\.js)/.test(sendFileMatch[0].sendContent)){
       // Dictionary for the file extensions and the correct content-type 
       const fileExtensionObject:any = {
         '.js' : 'javascript',
         '.html' : 'html'
       }
-      // 
-      const fileExtension:any = /(\.html|\.js)/.exec( sendMatch[0].sendContent );
+      
+      const fileExtension:any = /(\.html|\.js)/.exec( sendFileMatch[0].sendContent );
       responseInfo['content-type'] = fileExtensionObject[ fileExtension[0] ];
+    };
+  };
 
+  // When a .send method is matched
+  if (Object.keys(sendMatch).length){
     // Case: The content sent will be JSON
-    }else if (sendMatch[0].sendContent[0] === '{' || sendMatch[0].sendContent[0] === '['){
+    if (sendMatch[0].sendContent === '{' || sendMatch[0].sendContent === '[' 
+     || sendMatch[0].sendContent === 'true' || sendMatch[0].sendContent === 'false'){
       responseInfo['content-type'] = 'json';
 
     // Case: The content sent was a string  
-    }else if (sendMatch[0].sendContent[0] === '\'' || sendMatch[0].sendContent[0] === '"'){
+    } else if (sendMatch[0].sendContent[0] === '\'' || sendMatch[0].sendContent[0] === '"' || sendMatch[0].sendContent[0] === '`' ){
       responseInfo['content-type'] = 'html';
-
+  
     }
-  }
+  };
 
-  // Return Dummy object for testing
+  // Populate with default values if none matched
+  if(responseInfo['content-type'] === undefined) responseInfo['content-type'] = 'json';
+  if(responseInfo['status'] === undefined) responseInfo['status'] = 200;
+  
   return responseInfo;
-
 }

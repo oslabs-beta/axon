@@ -3,10 +3,10 @@ import SuperTestCodeBuilder from './utilityFunctions/SuperTestCodeBuilder';
 // Dictionary of phrases and strings that are reused to build the superTestCode
 const defaultStatements: any = {
   defaultOpen: '/*\nBEFORE TESTING:\n\t- Install Jest and Supertest\n\t- Configure the application package.json test script\n*/\n\nconst request = require(\'supertest\');', //append '<serverFilepath>'
-  server: 'const server = \`https://localhost:${',
+  server: 'const server = \`http://localhost:${',
   intTestDescription: 'Route integration',
   contentType: '\'Content-Type\'',
-  html: ' /text\/html/',
+  html: ' /text\\/html/',
   json: ' /json/',
   describe: 'describe(\'', // append '<path>' || '<reqMethod>.toUpperCase()'
   it: 'it(\'',
@@ -49,10 +49,25 @@ export default function generateSuperTestCode(pathObject: any): string{
     their endpoints as well.
   */
   function createTestsForEndpoints(currentFile: any, parentRoute = '/', superTestCode: SuperTestCodeBuilder): void{
-    
+
+    // Set the Beggining text indentation for each recursive call to be indented by 2 spaces
+    superTestCode.currentTextIndentation = 2; 
+
     // Traverse through Endpoints object and begin to write tests for each endpoint
     for (let route in currentFile.endpoints){
-      const currentRoute: string =  route === parentRoute ? route : parentRoute + route;
+
+      let currentRoute;
+      // Case: The route is the home route on the server file
+      if (parentRoute === '/' || route === parentRoute){
+        currentRoute = route;
+      // Case: The route is being used in a router file with the shortcut of '/' 
+      }else if (route === '/' && parentRoute !== '/'){
+        currentRoute = parentRoute;
+      // Case: The default case is to add the two routes together to get the current route
+      }else{
+        currentRoute = parentRoute + route;
+      }
+
       // Write the Describe block for the current route
       superTestCode.add(describe + currentRoute + anonCB, 'right');
 
@@ -81,12 +96,13 @@ export default function generateSuperTestCode(pathObject: any): string{
         // Close the It Block and Describe block for the specific supertest
         superTestCode.add('});');
         superTestCode.add('});', 'left');
+
+        // Reset the Text indention to 4 for the next Endpoint Describe Block
+        superTestCode.currentTextIndentation = 4; 
       }
       
       // Close the Describe block for the current route
-      superTestCode.currentTextIndentation = 4;
       superTestCode.add('});\n');
-      // superTestCode.add('', 'left');
     }
 
     // Traverse through the Routers object and write tests for each imported router
@@ -104,11 +120,15 @@ export default function generateSuperTestCode(pathObject: any): string{
 
       // Call function recursively to build superTest code for the imported router file
       createTestsForEndpoints(importedFile, parentRoute === '/' ? route : parentRoute + route, superTestCode);
-    }  
+    }
   }
 
   // Build the Super Test Code
   createTestsForEndpoints(serverFile, '/', superTestCode);
+
+  // Close the outer-most describe block
+  superTestCode.currentTextIndentation = 2;
+  superTestCode.add('});');
 
   // Return the Super Test Code String
   return superTestCode.buildString();

@@ -1,7 +1,6 @@
 import React from 'react';
 import { configure, shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-// import toJson from 'enzyme-to-json';
 
 // Enzyme is a wrapper around React test utilities which makes it easier to
 // shallow render and traverse the shallow rendered tree.
@@ -25,16 +24,7 @@ describe('React unit tests', () => {
       console.log(wrapper.debug());
       expect(wrapper).not.toBeNull();
     });
-
-    // it('have a logo in header', () => {
-    //   expect(wrapper)
-    // }
   });
-  
-  // TODO: Test the following:
-  // 1. RootComponent should contain a main tag with a header and div body, id contentbox
-  // 2. Header should be an image (logo)
-  // 3. div contentbox should render a 3 divs, id of `progressDisplay`, 'import', 'bottom box'
   
   describe('FileImport', () => {
     let wrapper;
@@ -44,15 +34,8 @@ describe('React unit tests', () => {
     });
 
     it('renders', () => {
-      // console.log(wrapper.debug());
       expect(wrapper).not.toBeNull();
     });
-
-    // TODO: Test the following:
-    // 1. 
-    // 2. 
-    // 3. 
-
   });
       
   describe('FileExport', () => {
@@ -63,15 +46,8 @@ describe('React unit tests', () => {
     });
 
     it('renders', () => {
-      // console.log(wrapper.debug());
       expect(wrapper).not.toBeNull();
     });
-
-    // TODO: Test the following:
-    // 1. 
-    // 2. 
-    // 3. 
-
   });
 
 });

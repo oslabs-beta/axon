@@ -8,7 +8,7 @@ const app = new Application({
     args: [path.join(__dirname, '..')]
 })
 
-describe('Electron appt tests', function() {
+describe('Electron app tests', function() {
 
     //Start the electron app before each test
     beforeEach(() => {
@@ -32,16 +32,4 @@ describe('Electron appt tests', function() {
         const title = await app.client.getTitle();
         return assert.strictEqual(title, 'Axon');
       });
-      
-    //   it('does not have the developer tools open', async () => {
-    //     const devToolsAreOpen = await app.client
-    //       .waitUntilWindowLoaded()
-    //       .browserWindow.isDevToolsOpened();
-    //     return assert.equal(devToolsAreOpen, false);
-    //   });
-      
-      
-    
-        
-      
 })

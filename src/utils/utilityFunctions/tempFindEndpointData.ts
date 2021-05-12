@@ -101,7 +101,6 @@ export default function createObjectOfTree(fileText: string, currentFilePath:any
     }
   });
 
-  console.log(fileObject);
   return fileObject;
 }
 
