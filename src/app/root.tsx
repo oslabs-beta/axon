@@ -18,6 +18,15 @@ const RootComponent = () => {
   const defaultInstructions = `
   /*
   Welcome to Axon!
+
+     __      ___   ___    ____   .__     __. 
+    /    \\      \\   \\   /    /   /  __   \\  |    \\   |   | 
+   /  ^   \\      \\   V   /    |   |  |    | |     \\  |   | 
+  /  /_\\   \\       >   <     |   |  |    | |            | 
+ /   __    \\     /   ^   \\   |   '--'    | |     |\\     | 
+/__/     \\__\\ /__/ \\__\\  \\____ /  |__|  \\__| 
+
+
   Upload the Server folder of an Express Application and 
   create your SuperTest file or Postman Collection! 
   */

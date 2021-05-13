@@ -1,6 +1,6 @@
 import React from 'react';
 import RootComponent from '@/app/root';
-import logo from '../../assets/AxonFinalLogo.png';
+import logo from '../../assets/AxonGoodColor2.png';
 import Particles from 'particlesjs'
 import { reduceEachTrailingCommentRange } from 'typescript';
 
