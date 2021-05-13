@@ -1,20 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './app.scss';
 import FileImport from '@/app/components/fileImport';
 import FileExport from '@/app/components/fileExport';
-import options from "./options";
+import MonacoEditor from '@monaco-editor/react';
+import options from './options';
 import uploadFolder from '../../assets/folderImport.png';
 import createdTest from '../../assets/codeicon.png';
 import postmanLogo from '../../assets/postmanLogoText.png';
 import postmanIcon from '../../assets/postmanIcon.png';
 import buildSuperTest from '../utils/buildSupertest';
 import buildPostmanCollection from '../utils/buildPostman';
-import MonacoEditor from "@monaco-editor/react";
-
 
 const RootComponent = () => {
   
-  
+  // Default instructions to appear in the Supertest Editor
   const defaultInstructions = `
   /*
   Welcome to Axon!
@@ -31,90 +30,93 @@ const RootComponent = () => {
   create your SuperTest file or Postman Collection! 
   */
  `;
- const defaultPostmanTab = `
+
+ // Default instructions to appear in the Postman Editor
+  const defaultPostmanTab = `
  /* 
  Axon builds Postman Collections as well!
  Make sure to export from axon, then import your collection into Postman.
  This will autogenerate your test document APIs, and save you some time (:
  */
  `;
- 
- // Using Hooks to set our state
- const [axonState, setAxonState] = useState <any | undefined> ({
-   // The Path Object that will be created from the imported Folder
-   pathObject: {},
-   
-   // State Related to show the progress the user is making as they upload a file
-   progressText: 'Import server folder here',
-   image: uploadFolder,
-   progressVal: "0%",
-   createDisable: true,
-   postmanDisable: true,
-   exportDisable: true,
-   
-   // State Related to the Content of the Monaco Editor
-   superTestCode: defaultInstructions,
-   postmanCollections: defaultPostmanTab,
-   showPostManCode: false,
-   showSuperTestCode: true,
-   
-   // Name of the File to Export
-   textInput: ''
+
+  // Initialize the State for the component
+  const [axonState, setAxonState] = useState <any | undefined>({
+    // The Path Object that will be created from the imported Folder
+    pathObject: {},
+
+    // State Related to showing the progress the user is making as they upload a file and generate code
+    progressText: 'Import server folder here',
+    image: uploadFolder,
+    progressVal: '0%',
+    createDisable: true,
+    postmanDisable: true,
+    exportDisable: true,
+
+    // State Related to the Content of the Monaco Editor
+    superTestCode: defaultInstructions,
+    postmanCollections: defaultPostmanTab,
+    showPostManCode: false,
+    showSuperTestCode: true,
+
+    // The name of the File to Export
+    textInput: '',
   });
-  
-  // Will update the State so that the super test code shows in the Monaco Editor
+
+  // This function will update the State so that the Supertest code can be shown in the Monaco Editor
   const showSuperTestCode = () => {
-    if(!axonState.showSuperTestCode){
+    if (!axonState.showSuperTestCode) {
       setAxonState({
         ...axonState,
         showPostManCode: false,
-        showSuperTestCode: true
-      })
+        showSuperTestCode: true,
+      });
     }
-  }
+  };
 
-  // Will update the State so that the Postman code shows in the Monaco Editor
+  // This function will update the State so that the Postman code can be shown in the Monaco Editor
   const showPostmanCode = () => {
-    if (!axonState.showPostmanCode){
+    if (!axonState.showPostmanCode) {
       setAxonState({
         ...axonState,
         showPostManCode: true,
-        showSuperTestCode: false
-      })
+        showSuperTestCode: false,
+      });
     }
-  }
+  };
 
+  // This function will update the text of the Monaco editor, based on the 'showPostManCode' and 'showSuperTestCode' booleans in the State
   const updateMonacoEditor = (monacoText: any): void => {
-    
-    if (axonState.showPostManCode){
+    // Case: When the Postman Code should be shown
+    if (axonState.showPostManCode) {
       setAxonState({
         ...axonState,
-        postmanCollections: monacoText, 
+        postmanCollections: monacoText,
       });
-    }else if(axonState.showSuperTestCode){
+    // Case: When the SuperTest Code should be shown
+    } else if (axonState.showSuperTestCode) {
       setAxonState({
         ...axonState,
         superTestCode: monacoText,
       });
     }
-  }
+  };
 
-
-  // Updates the state once a file is imported
+  // This function will update the state once a file is imported
   const onImportClick = (pathObject: any, checkImage: any) => {
-    setAxonState({...axonState, 
-                  fileList: {}, 
-                  progressText: "Your files have been imported", 
-                  image: checkImage, 
-                  progressVal: "33.33%", 
-                  createDisable: false,
-                  postmanDisable: false,
-                  exportDisable: true, 
-                  textInput: '',
-                  pathObject: pathObject,
-                }) 
-  }
-
+    setAxonState({
+      ...axonState,
+      fileList: {},
+      progressText: 'Your files have been imported',
+      image: checkImage,
+      progressVal: '33.33%',
+      createDisable: false,
+      postmanDisable: false,
+      exportDisable: true,
+      textInput: '',
+      pathObject,
+    });
+  };
 
   // When the Create Button is pressed this will update the state with the superTestCode
   const onCreateButtonClick = () => {
@@ -122,109 +124,107 @@ const RootComponent = () => {
     const superTestCode = buildSuperTest(axonState.pathObject);
 
     // Update the State with the Super test code
-    setAxonState(({...axonState,
-      superTestCode: superTestCode, 
-      progressText: "Supertest files created", 
-      image:createdTest, 
-      progressVal: "66.66%", 
-      exportDisable: false, 
+    setAxonState(({
+      ...axonState,
+      superTestCode,
+      progressText: 'Supertest files created',
+      image: createdTest,
+      progressVal: '66.66%',
+      exportDisable: false,
       createDisable: true,
       showPostManCode: false,
       showSuperTestCode: true,
-    }))
-  }
+    }));
+  };
 
+  // When the Postman Button is pressed, this will update the state with the Postman collections
   const onPostmanButtonClick = () => {
-    // Create json string
+    // Create the JSON string, representing the Postman collections
     const postmanCollections = buildPostmanCollection(axonState.pathObject);
 
-
     // Update the State with the Postman Collections
-    setAxonState(({...axonState,
-      progressText: "Postman Collection successfully created", 
-      image: postmanIcon, 
-      postmanCollections: postmanCollections,
-      progressVal: "66.66%", 
-      exportDisable: false, 
+    setAxonState(({
+      ...axonState,
+      progressText: 'Postman Collection successfully created',
+      image: postmanIcon,
+      postmanCollections,
+      progressVal: '66.66%',
+      exportDisable: false,
       postmanDisable: true,
       showPostManCode: true,
       showSuperTestCode: false,
-    }))
-  }
+    }));
+  };
 
-  
-  
-  // Updates state once a file is exported
+  // This function will update the state once a file is exported, in order to show the current progress of the user
   const onExportClick = (newProgressState:any, progVal: any, checkImg: any) => {
-  setAxonState({...axonState, 
-                progressText: newProgressState, 
-                progressVal: progVal, 
-                image: checkImg})
-  }
-  
+    setAxonState({
+      ...axonState,
+      progressText: newProgressState,
+      progressVal: progVal,
+      image: checkImg,
+    });
+  };
+
   return (
     <main>
-  
-       {/* Main body (currently middle, will be left side) */}
+      {/* The Leftmost divider, representing the upload area */}
       <div className="contentBox">
-        
-        {/* First part of the body. Displayed Progress Text and Bar */}
+        {/* Top of Upload area that displays the progress text and bar */}
         <div id="progressDisplay">
           <h1>{axonState.progressText}</h1>
-          <div id="progressbarNew" >
-            <div style={{width: `${axonState.progressVal}`}}></div>
+          <div id="progressbarNew">
+            <div style={{ width: `${axonState.progressVal}` }} />
           </div>
         </div>
-        
-        {/* Second part of the body. Includes Import Button and Image. */}
+        {/* Main upload area in the middle that includes the Import Button and Main Progress Image */}
         <div id="import">
-          <FileImport setFileState={ onImportClick }  /> 
-          <img id="fileImg" src={axonState.image}></img>
+          <FileImport setFileState={onImportClick} />
+          <img id="fileImg" src={axonState.image} />
         </div>
-
-        {/* Last part of the body. Displays Create &Export Button, and file name text box */}
+        {/* Bottom-most divider, of the Upload Area. Contains the Supertest and Postman Buttons*/}
         <div className="bottomBox">
-          
-          {/* Displays Create Button and Export Button. */}
+          {/* Button to generate supertest */}
           <div id="createExport">
-            {/* button to generate supertest */}
-            <button disabled={axonState.createDisable} id="createButton" onClick={onCreateButtonClick} >
-            SuperTest
-            </button> 
-            {/* button to generate postman collection */}
+            <button disabled={axonState.createDisable} id="createButton" onClick={onCreateButtonClick}>
+              SuperTest
+            </button>
+            {/* Button to generate postman collection */}
             <button disabled={axonState.postmanDisable} id="createButton" onClick={onPostmanButtonClick}>
-              <img id="postmanLogo" src={postmanLogo}/>
+              <img id="postmanLogo" src={postmanLogo} />
             </button>
           </div>
         </div>
-            
       </div>
 
+      {/*The Rightmost divider, containing the Monaco Editor and related functionality*/}
       <div className="MonacoBox">
+        {/* Divider containing the Tabs that allow for switching between types of text in Monaco editor */}
         <div id="tabs">
           <button className={axonState.showSuperTestCode ? 'active-tab' : 'unactive-tab'} onClick={showSuperTestCode}>SuperTest</button>
           <button className={axonState.showPostManCode ? 'active-tab' : 'unactive-tab'} onClick={showPostmanCode}>Postman</button>
         </div>
+        {/* The Monaco Editor */}
         <MonacoEditor
           height="650px"
           width="600px"
-          language={axonState.showSuperTestCode ? 'javascript': 'json'}
+          language={axonState.showSuperTestCode ? 'javascript' : 'json'}
           options={options}
           theme="vs-dark"
           value={axonState.showPostManCode ? axonState.postmanCollections : axonState.superTestCode}
           onChange={updateMonacoEditor}
-        /> 
+        />
+        {/* The Bottom Divider of the Monaco Editor Area */}
         <div className="bottomBox">
           {/* Displays Text box when File is created and ready for export */}
-          <FileExport fileType={axonState.showSuperTestCode} postmanCollection={axonState.postmanCollections} superTest={axonState.superTestCode} textInput={axonState.textInput} disableStatus={axonState.exportDisable} setProgressState={onExportClick}/>
-        <div>
-            <input hidden={axonState.exportDisable} placeholder="Enter Your File Name" type="text" autoComplete="off" id="fname" name="fname" value={axonState.textInput} onChange={e => {setAxonState({...axonState, textInput: e.target.value});}}/>
+          <FileExport fileType={axonState.showSuperTestCode} postmanCollection={axonState.postmanCollections} superTest={axonState.superTestCode} textInput={axonState.textInput} disableStatus={axonState.exportDisable} setProgressState={onExportClick} />
+          <div>
+            <input hidden={axonState.exportDisable} placeholder="Enter Your File Name" type="text" autoComplete="off" id="fname" name="fname" value={axonState.textInput} onChange={(e) => { setAxonState({ ...axonState, textInput: e.target.value }); }} />
           </div>
         </div>
       </div>
-
     </main>
-  )
-}
+  );
+};
 
 export default RootComponent;
