@@ -1,63 +1,55 @@
-import React, {useState, useEffect} from 'react';
-import check from '../../../assets/Checkmark.png'
+import React, { useState, useEffect } from 'react';
+import check from '../../../assets/Checkmark.png';
 
-
-// functional component to create export functionality   
+// This functional component will handle all export functionality
 const FileExport = (props:any) => {
 
+  // Global variable to store the Supertest code or Postman collections being exported
+  const text = props.fileType ? props.superTest : props.postmanCollection;
 
-  // global variable to store prop that carries returned supertest from main algorithm
-  let text = props.fileType ? props.superTest : props.postmanCollection;
-  // global variable to hold exported file name
+  // Generate the name of the file that will be exported:
   let filename:any;
- // conditional statement to check if user left input field blank
-  if(props.textInput === ""){
-      // if input field empty filename is supertest.js
-      filename = props.fileType ? "superTest.js" : "postmanCollection.json"
-    }else{
-      // exported file gets saved as inputed filename
-      filename = props.fileType ? props.textInput + ".js" : props.textInput + ".json";
-    }
 
-  // function that gets called after invoking export button to change current state
-  const onFileDownload = ():void => {
-    
-    // return passed in prop to reset state to passed in arguments
-    return props.setProgressState("Supertest sucessfully exported", "100%", check);    
+  // Handle the Case that the input field is blank
+  if (props.textInput === '') {
+    // Conditionally set the filename based on the type of file that is being exported
+    filename = props.fileType ? 'superTest.js' : 'postmanCollection.json';
+  // When the input field has been filled
+  } else {
+    // Generate the approprate filename and file extension, based on file type being exported
+    filename = props.fileType ? `${props.textInput}.js` : `${props.textInput}.json`;
   }
 
-  // create function to create a tag that will encode supertext string into a dowloadable file
+  // This function will update the state to show that the file has been downloaded sucessfully
+  const onFileDownload = ():void => {
+    props.setProgressState('Supertest sucessfully exported', '100%', check);
+  }
+
+  // This function will create a tag that will encode the file text to be exported, into a downloadable file
   function download(file:string, text:string) {
-              
-    //creating an invisible element
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(text));
+    // Create a temporary anchor tag to download the file to the users computer
+    const element = document.createElement('a');
+    element.setAttribute('href', `data:text/plain;charset=utf-8, ${encodeURIComponent(text)}`);
     element.setAttribute('download', file);
-  
-    // Above code is equivalent to
-    // <a href="path of file" download="file name">
-  
-    document.body.appendChild(element);
-  
-    //onClick property
     element.click();
-  
-    document.body.removeChild(element);
-    // call fuction to reset state on root file
+
+    // Update the state to show that the file has been downloaded
     onFileDownload();
-}
-  
-  // return input tag to root file that holds the export button functionality
+  }
+
   return (
     <div>
-
-      <input disabled={props.disableStatus} type="button" id="exportbtn" value="Export" onClick={() => {
-        download(filename, text)   
-      }}/>
-
+      <input
+        disabled={props.disableStatus}
+        type="button"
+        id="exportbtn"
+        value="Export"
+        onClick={() => {
+          download(filename, text);
+        }}
+      />
     </div>
-  )
+  );
 };
 
 export default FileExport;
-
