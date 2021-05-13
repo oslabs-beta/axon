@@ -3,6 +3,8 @@ import RootComponent from '@/app/root';
 import Particles from 'particlesjs';
 import logo from '../../assets/AxonFinalLogo.png';
 
+
+
 // Main App Component
 const App = () => {
 
