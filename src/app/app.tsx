@@ -1,7 +1,7 @@
 import React from 'react';
 import RootComponent from '@/app/root';
 import Particles from 'particlesjs';
-import logo from '../../assets/AxonFinalLogo.png';
+import logo from '../../assets/AxonTitleIcon.png';
 
 
 

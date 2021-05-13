@@ -1,5 +1,5 @@
-import tempResolvePath from './tempResolvePath';
-import tempFuncDefinitionParser from './tempFuncDefinitionParser';
+import ResolvePath from './ResolvePath';
+import FuncDefinitionParser from './FuncDefinitionParser';
 
 const AbstractSyntaxTree = require('abstract-syntax-tree');
 
@@ -54,7 +54,7 @@ export default function (fileText: string, currentFilePath:string) {
             const importPath = statement.declarations[0].init.arguments[0].value;
 
             // Add the imported module to the imports object on the fileObject
-            fileObject.imports[importName] = tempResolvePath(importPath, currentFilePath);
+            fileObject.imports[importName] = ResolvePath(importPath, currentFilePath);
           }
         }
       }
@@ -90,7 +90,7 @@ export default function (fileText: string, currentFilePath:string) {
                   }
 
                   // Convert the anonymous function, which is the last argument, into an object of the endpoint data
-                  endpointArray[endpointArray.length - 1] = tempFuncDefinitionParser(endpointArray[endpointArray.length - 1]);
+                  endpointArray[endpointArray.length - 1] = FuncDefinitionParser(endpointArray[endpointArray.length - 1]);
 
                   // Add the Endpoint Array to the Endpoints object
                   if (fileObject.endpoints[route]) {

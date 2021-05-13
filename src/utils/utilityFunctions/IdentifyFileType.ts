@@ -6,7 +6,7 @@
  *   fileType: will be 'Server', 'Router' or 'Other'
  *   portNumber: will be a string or null
  */
-export function tempIdentifyFileType(fileText:any) :any {
+export function IdentifyFileType(fileText:any) :any {
 
   // Attempt to match a port number in the current file
   const dotListenRE = /\.listen\((?<port>.*?)(?=,|\))/i;
