@@ -6,8 +6,9 @@
 
  Axon aids developers with Express.js based applications to autogenerate integration tests and Postman Collections by extracting RESTful API endpoints without the need to write any code. Simply import your server folder and Axon will do the hard work for you!   
 
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)  [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)  [![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
-
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs) 
+![Release: 1.0](https://img.shields.io/badge/Release-1.0-orange) 
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/oslabs-beta/axon)
 
 
 ## Installation
@@ -27,7 +28,13 @@ Axon desktop application is available to install for Mac or Windows operating sy
 - Export your files into your Application
 
   
+## Prerequisites 
 
+Make sure to have already installed supertest and jest in your projects dev-dependencies 
+
+```npm install supertest --save```
+
+```npm install jest --save```
 
 ## Demo
 
