@@ -14,11 +14,9 @@
 ## Installation
 Axon desktop application is available to install for Mac or Windows operating systems.
 
+[Download on Mac](https://github.com/oslabs-beta/axon/releases/download/v1.0.0/Axon-1.0.0.dmg)
 
-[Download on Mac]()
-
-[Download on Windows]()
-
+[Download on Windows](https://github.com/oslabs-beta/axon/releases/download/v1.0.0/Axon.Setup.1.0.0.zip)
 
 ## Features
 
