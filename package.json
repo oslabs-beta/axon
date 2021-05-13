@@ -10,7 +10,10 @@
       "build/icon.*"
     ],
     "win": {
-      "icon": "src/axonicon_UWT_icon.ico"
+      "icon": "src/axonDesktopIcon.ico"
+    },
+    "mac":{
+      "icon": "src/axonDesktopIcon.ico"
     }
   },
   "scripts": {

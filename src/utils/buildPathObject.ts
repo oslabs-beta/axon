@@ -1,5 +1,5 @@
-import tempFindEndpointData from './utilityFunctions/tempFindEndpointData';
-import { tempIdentifyFileType } from './utilityFunctions/tempIdentifyFileType';
+import FindEndpointData from './utilityFunctions/FindEndpointData';
+import { IdentifyFileType } from './utilityFunctions/IdentifyFileType';
 
 /**
  * When a server folder is uploaded, it is converted to a 'flat' array-like FileList object.
@@ -28,7 +28,7 @@ export default function (fileList:any) {
       // When the file is read sucessfully
         .then((fileText) => {
           // Identify the type of file
-          const { fileType, portNumber } = tempIdentifyFileType(fileText);
+          const { fileType, portNumber } = IdentifyFileType(fileText);
 
           // When the type of file is a server, add the server path to the pathObject
           if (fileType === 'Server') {
@@ -41,7 +41,7 @@ export default function (fileList:any) {
           // When the file is a server or router file
           if (fileType === 'Server' || fileType === 'Router') {
             // Extract necessary route and endpoint data from fileText
-            const { imports, endpoints, routers } = tempFindEndpointData(fileText, fileList[i].webkitRelativePath);
+            const { imports, endpoints, routers } = FindEndpointData(fileText, fileList[i].webkitRelativePath);
             // Add relevant data to the new file object
             newFileObject = {
               name: fileList[i].name,
