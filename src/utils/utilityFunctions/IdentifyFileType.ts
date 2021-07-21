@@ -6,7 +6,7 @@
  *   fileType: will be 'Server', 'Router' or 'Other'
  *   portNumber: will be a string or null
  */
-export function IdentifyFileType(fileText:any) :any {
+export function IdentifyFileType(fileText: string) : {fileType: string, portNumber: string} {
 
   // Attempt to match a port number in the current file
   const dotListenRE = /\.listen\((?<port>.*?)(?=,|\))/i;
@@ -15,7 +15,7 @@ export function IdentifyFileType(fileText:any) :any {
   // Assign a port Number when a port number is matched
   let portNumber;
   if (listenMatch) {
-    portNumber = listenMatch.groups.port;
+    portNumber = listenMatch.groups!.port || '8080';
   }
 
   // Attempt to match a 'Router' Method being invoked
@@ -35,5 +35,5 @@ export function IdentifyFileType(fileText:any) :any {
     fileType = 'Router'; 
   }
 
-  return { fileType, portNumber: portNumber || null };
+  return { fileType, portNumber: <string> portNumber};
 }

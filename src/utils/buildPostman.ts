@@ -6,16 +6,18 @@
    objects and their endpoints.
  *
 */
-export default function generatePostmanCollection(pathObject: any): string {
+export default function generatePostmanCollection(pathObject: PathObject): string {
   // Isolate the root server file
-  const serverFile = pathObject[pathObject.__serverFilePath__];
+  const serverPath = <string> pathObject.__serverFilePath__;
+  const serverFile = <FileObject> pathObject[serverPath];
 
   // Check if the port detected is a number for use in collection variables, otherwise use a default port number
-  const portNumber = `${parseInt(pathObject.__portNumber__)}` === 'NaN' ? 8080 : pathObject.__portNumber__;
+  const portInServerFiles = <string> pathObject.__portNumber__;
+  const portNumber = parseInt(portInServerFiles) === NaN ? 8080 : portInServerFiles;
 
   // Initialize the default collection schema
   // Establish port variable for added flexibility in development
-  const postmanCollection: any = {
+  const postmanCollection:PostmanCollection = {
     info: {
 	  name: 'New Collection',
 	  schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json',
@@ -46,26 +48,26 @@ export default function generatePostmanCollection(pathObject: any): string {
     variable: [
 	  {
         key: 'port',
-        value: portNumber,
+        value: `${portNumber}`,
 	  },
     ],
   };
 
   // Utility function to generate routes and their endpoints on the current file
   // Recurses for any imported routers
-  function extractEndpointData(currentFile: any, parentRoute = '/'): void {
+  function extractEndpointData(currentFile: FileObject, parentRoute = '/'): void {
     // Traverse through endpoints object for paths and respective methods
     for (const route in currentFile.endpoints) {
 	  const currentRoute: string = parentRoute === '/' || route === parentRoute ? route : parentRoute + route;
 
       // Iterate through the current endpoint array
-      for (const endpointArray of currentFile.endpoints[route]) {
+      for (const endpointArray of currentFile.endpoints[route] as AllEndpoints) {
         // Store transformed request type for addition to requestItem
-        const reqMethod = endpointArray[0].toUpperCase();
-        const requestItem = {
+        const reqMethod = <string> endpointArray[0];
+        const requestItem: RequestObject = {
           name: currentRoute,
           request: {
-			  method: reqMethod,
+			  method: reqMethod.toUpperCase(),
 			  header: [],
 			  url: {
               raw: `localhost:{{port}}${currentRoute}`,
@@ -90,10 +92,10 @@ export default function generatePostmanCollection(pathObject: any): string {
     // Iterate through routers object to grab endpoints in appropriate file
     for (const route in currentFile.routers) {
       // Locate router file in the pathObject
-      const currentRouteArray = currentFile.routers[route];
+      const currentRouteArray = <AllRouters> currentFile.routers[route];
       const routerName = currentRouteArray[0][1];
       const importedFilePath = `${currentFile.imports[routerName]}.js`;
-      const importedFile = pathObject[importedFilePath];
+      const importedFile = <FileObject> pathObject[importedFilePath];
 
       // Skip if it does not exist in server directory
       if (importedFile === undefined) {

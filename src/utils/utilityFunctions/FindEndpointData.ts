@@ -3,7 +3,7 @@ import FuncDefinitionParser from './FuncDefinitionParser';
 
 const AbstractSyntaxTree = require('abstract-syntax-tree');
 
-const expressMethods: any = {
+const expressMethods: BoolDictionary = {
   get: true,
   delete: true,
   patch: true,
@@ -34,13 +34,13 @@ export default function (fileText: string, currentFilePath:string) {
   const tree = new AbstractSyntaxTree(fileText);
 
   // Initialize the object to return
-  const fileObject:any = {};
+  const fileObject = {} as FileObject;
   fileObject.imports = {};
   fileObject.endpoints = {};
   fileObject.routers = {};
 
   // Traverse through the body of the Syntax Tree (representing the code from the current file)
-  tree.body.forEach((statement) => {
+  tree.body.forEach((statement:any) => {
     
     // Case: The Current Statement is an imported module
     if (statement.type === 'VariableDeclaration') {
@@ -94,7 +94,8 @@ export default function (fileText: string, currentFilePath:string) {
 
                   // Add the Endpoint Array to the Endpoints object
                   if (fileObject.endpoints[route]) {
-                    fileObject.endpoints[route].push(endpointArray);
+                    const fileEndpoints = <AllEndpoints> fileObject.endpoints[route];
+                    fileEndpoints.push(endpointArray);
                   } else {
                     fileObject.endpoints[route] = [endpointArray];
                   }
@@ -112,7 +113,8 @@ export default function (fileText: string, currentFilePath:string) {
                     
                     // Add the new Router Array to the routers object in the fileObject
                     if (fileObject.routers[route]) {
-                      fileObject.routers[route].push(routerArray);
+                      const fileRoutes = <AllRouters> fileObject.routers[route];
+                      fileRoutes.push(routerArray);
                     } else {
                       fileObject.routers[route] = [routerArray];
                     }

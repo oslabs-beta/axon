@@ -9,9 +9,10 @@ import SuperTestCodeBuilder from './utilityFunctions/SuperTestCodeBuilder';
  * @param pathObject 
  * @returns 
  */
- export default function generateSuperTestCode(pathObject: any): string {
+ export default function generateSuperTestCode(pathObject: PathObject): string {
   // Find the Server File within the 'pathObject' as the starting File
-  const serverFile = pathObject[pathObject.__serverFilePath__];
+  const serverPath = <string> pathObject.__serverFilePath__;
+  const serverFile = <FileObject>pathObject[serverPath];
 
   // Create a new instance of SuperTestCodeBuilder which will be used to build the superTest code string
   const codeFormatting = {
@@ -21,7 +22,7 @@ import SuperTestCodeBuilder from './utilityFunctions/SuperTestCodeBuilder';
   const superTestCode = new SuperTestCodeBuilder(codeFormatting);
 
   // Add Heading to the SuperTestFile
-  const defaultOpenning = `
+  const defaultOpening = `
 /*
   BEFORE TESTING:
     - Install Jest and Supertest
@@ -30,7 +31,7 @@ import SuperTestCodeBuilder from './utilityFunctions/SuperTestCodeBuilder';
 
 const request = require(\'supertest\');
   `;
-  superTestCode.add(defaultOpenning);
+  superTestCode.add(defaultOpening);
   superTestCode.add(`const server = \`http://localhost:$\{${pathObject.__portNumber__}}\`;\n`);
 
   // Write Outter-Most Describe Block
@@ -41,7 +42,7 @@ const request = require(\'supertest\');
     It will recursively go to any imported routers and generate the superTestCode for
     their endpoints as well.
   */
-  function createTestsForEndpoints(currentFile: any, parentRoute = '/', superTestCode: SuperTestCodeBuilder): void {
+  function createTestsForEndpoints(currentFile: FileObject, parentRoute = '/', superTestCode: SuperTestCodeBuilder): void {
     // Set the Beggining text indentation for each recursive call to be indented by 2 spaces
     superTestCode.currentTextIndentation = 2;
 
@@ -63,11 +64,12 @@ const request = require(\'supertest\');
       superTestCode.add(`describe(\'${currentRoute}\', () => {`, 'right');
 
       // Traverse through the current endpoint array
-      for (const endpointArray of currentFile.endpoints[route]) {
+      for (const endpointArray of currentFile.endpoints[route] as AllEndpoints) {
         // Store relevant endpoint information from endpoint array into variables
-        const reqMethod = endpointArray[0];
-        const statusCode = endpointArray[endpointArray.length - 1].status;
-        const contentTypeOfEndpoint = endpointArray[endpointArray.length - 1]['content-type'];
+        const reqMethod = <string> endpointArray[0];
+        const testParams = <TestParams> endpointArray[endpointArray.length - 1];
+        const statusCode = testParams.status;
+        const contentTypeOfEndpoint = <string> testParams['content-type'];
         const codeAndType = `${statusCode} and ${contentTypeOfEndpoint}`;
 
         // Write the opening Describe Block for the current endpoint
@@ -77,7 +79,7 @@ const request = require(\'supertest\');
         superTestCode.add(`it(\'Responds with status code ${codeAndType} content type \', () => {`, 'right');
 
         // Write the SuperTest test nested inside the It Block
-        const contentTypes: any = {
+        const contentTypes: Dictionary = {
           html: ' /text\\/html/',
           json: ' /json/',
         };
@@ -104,10 +106,10 @@ const request = require(\'supertest\');
     // Traverse through the Routers object and write tests for each imported router
     for (const route in currentFile.routers) {
       // Find the imported File in the pathObject
-      const currentRouteArray = currentFile.routers[route];
+      const currentRouteArray = <AllRouters> currentFile.routers[route];
       const routerName = currentRouteArray[0][1];
       const importedFilePath = `${currentFile.imports[routerName]}.js`;
-      const importedFile = pathObject[importedFilePath];
+      const importedFile = <FileObject> pathObject[importedFilePath];
 
       // Skip the file if it is not a router file
       if (importedFile === undefined) {
