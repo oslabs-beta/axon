@@ -33,7 +33,7 @@ export default function (fileList:ServerDirectory) {
           // When the type of file is a server, add the server path to the pathObject
           if (fileType === 'Server') {
             pathObject.__serverFilePath__ = fileList[i].webkitRelativePath;
-            pathObject.__portNumber__ = portNumber;
+            pathObject.__portNumber__ = <string>portNumber;
           }
 
           // Create a new File Object based on the file type

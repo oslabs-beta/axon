@@ -60,7 +60,7 @@ interface RoutersObject{
   [parentRoute:string]:AllRouters;
 }
 
-type Endpoint = string | TestParams;
+type Endpoint = string | TestParams | null;
 type EndpointArray = Array<Endpoint>;
 type AllEndpoints = Array<EndpointArray>;
 
@@ -116,4 +116,17 @@ interface EndpointInformation {
   statusCode?: number | string,
   route?: string,
   contentType?: string
+}
+
+interface ExtensionDictionary {
+  [index:string]:string,
+  '.js': string,
+  '.html': string
+}
+
+interface ReturnMethods {
+  status: boolean,
+  json: string,
+  send: string,
+  sendFile: ExtensionDictionary
 }

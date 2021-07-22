@@ -13,7 +13,7 @@ export default function generatePostmanCollection(pathObject: PathObject): strin
 
   // Check if the port detected is a number for use in collection variables, otherwise use a default port number
   const portInServerFiles = <string> pathObject.__portNumber__;
-  const portNumber = parseInt(portInServerFiles) === NaN ? 8080 : portInServerFiles;
+  const portNumber = Number.isNaN(parseInt(portInServerFiles)) ? 8080 : portInServerFiles;
 
   // Initialize the default collection schema
   // Establish port variable for added flexibility in development
@@ -67,13 +67,13 @@ export default function generatePostmanCollection(pathObject: PathObject): strin
         const requestItem: RequestObject = {
           name: currentRoute,
           request: {
-			  method: reqMethod.toUpperCase(),
-			  header: [],
-			  url: {
+            method: reqMethod.toUpperCase(),
+            header: [],
+            url: {
               raw: `localhost:{{port}}${currentRoute}`,
               host: [
-				  'localhost',
-				  ],
+              'localhost',
+              ],
               port: '{{port}}',
             },
           },
