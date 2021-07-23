@@ -4,7 +4,7 @@
  * @param {string} pathToResolve - This is the path that needs to be resolved.
  * @param {string} pathOfCurrentFile - This is the path of the current file.
  */
-export default function (pathToResolve:any, pathOfCurrentFile: any): string {
+export default function (pathToResolve:string, pathOfCurrentFile: string): string {
   // Validate the input:
   if (typeof pathToResolve !== 'string') return `${pathToResolve} could not be resolved`;
   if (typeof pathOfCurrentFile !== 'string') return `${pathOfCurrentFile} is an invalid current file path`;
@@ -13,15 +13,15 @@ export default function (pathToResolve:any, pathOfCurrentFile: any): string {
   if (pathToResolve.slice(0, 4) !== 'path' && pathToResolve.slice(0, 2) !== '..') {
     
     // The Resolved Path will be the pathOfCurrentFile (excluding the ending file), concatenated with the pathToResolve 
-    pathOfCurrentFile = pathOfCurrentFile.split('/');
-    pathOfCurrentFile.pop();
+    let currentFilePath = pathOfCurrentFile.split('/');
+    currentFilePath.pop();
 
-    pathToResolve = pathToResolve.split('/');
-    if (pathToResolve[0] === '.') {
-      pathToResolve.shift();
+    let resolvableFilePath = pathToResolve.split('/');
+    if (resolvableFilePath[0] === '.') {
+      resolvableFilePath.shift();
     }
 
-    return `${pathOfCurrentFile.join('/')}/${pathToResolve.join('/')}`;
+    return `${currentFilePath.join('/')}/${resolvableFilePath.join('/')}`;
 
   // Case: The pathToResolve is a path to a file where moving up 1 or more directory levels is required
   } if (pathToResolve.slice(0, 4) !== 'path' && pathToResolve.slice(0, 2) === '..') {
@@ -31,17 +31,17 @@ export default function (pathToResolve:any, pathOfCurrentFile: any): string {
      The now shortened 'pathOfCurrentFile' will be concatenated with the 'pathToResolve', which will be removed of all '..' symbols,
      to create the new resolved path.
     */
-    pathToResolve = pathToResolve.split('/');
-    pathOfCurrentFile = pathOfCurrentFile.split('/');
+    let relativeFilePath = pathToResolve.split('/');
+    let currentFilePath = pathOfCurrentFile.split('/');
 
-    pathOfCurrentFile.pop();
+    currentFilePath.pop();
 
-    while (pathToResolve[0] === '..') {
-      pathToResolve.shift();
-      pathOfCurrentFile.pop();
+    while (relativeFilePath[0] === '..') {
+      relativeFilePath.shift();
+      currentFilePath.pop();
     }
 
-    return `${pathOfCurrentFile.join('/')}/${pathToResolve.join('/')}`;
+    return `${currentFilePath.join('/')}/${relativeFilePath.join('/')}`;
 
   // Case: The pathToResolve is a path that is the evaluated result of a method being invoked from the native 'path' module
   } if (pathToResolve.slice(0, 4) === 'path') {

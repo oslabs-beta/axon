@@ -1,3 +1,5 @@
+const AbstractSyntaxTree = require('abstract-syntax-tree');
+
 /**
  * This function will identify the type of file based on the text and attempt
  * to find the portNumber, if given. 
@@ -6,34 +8,63 @@
  *   fileType: will be 'Server', 'Router' or 'Other'
  *   portNumber: will be a string or null
  */
-export function IdentifyFileType(fileText:any) :any {
-
-  // Attempt to match a port number in the current file
-  const dotListenRE = /\.listen\((?<port>.*?)(?=,|\))/i;
-  const listenMatch = fileText.match(dotListenRE);
-
-  // Assign a port Number when a port number is matched
+export function IdentifyFileType(fileText: string) : {fileType: string, portNumber: string|undefined} {
+  const tree = new AbstractSyntaxTree(fileText);
   let portNumber;
-  if (listenMatch) {
-    portNumber = listenMatch.groups.port;
+  let fileType;
+
+  const isServer = () => {
+    // Attempt to match a 'listen' method being invoked
+    const listen = tree.find({
+      type:'ExpressionStatement', 
+      expression: {
+        type:'CallExpression', 
+        callee: {
+          type:'MemberExpression', 
+          property: {
+            name:'listen'
+          },
+        },
+      },
+    });
+
+    if(listen.length){
+      const portArgRef = listen[0].expression.arguments[0];
+      portNumber = portArgRef.value ? String(portArgRef.value) : portArgRef.name;
+      return true;
+    };
+    return false;
   }
+  const isRouter = () => {
+    // Attempt to match a 'Router' Method being invoked
+    const router = tree.find({
+      type:'VariableDeclaration', 
+      declarations: {
+        0: {
+          init: {
+            type: 'CallExpression', 
+            callee: {
+              type:'MemberExpression', 
+              property: {
+                name:'Router',
+              },
+            },
+          },
+        },
+      },
+    });
 
-  // Attempt to match a 'Router' Method being invoked
-  const dotRouterRE = /express\.Router\(\)/gi;
-  const routerMatch = fileText.match(dotRouterRE);
-
-  // Assign the File Type based on the matches found:
-  let fileType = '';
-  // Case: The File is neither a Router file nor a Server file
-  if (listenMatch === null && routerMatch === null) {
-    fileType = 'Other'; 
-  // Case: The File is a Server File
-  } else if (Array.isArray(listenMatch) && portNumber){
+    if(router.length) return true;
+    return false;
+  }
+  
+  if(isServer()){
     fileType = 'Server';
-  // Case: The File is a Router File
-  }else if (Array.isArray(routerMatch) && routerMatch.includes('express.Router()')) {
-    fileType = 'Router'; 
+  } else if(isRouter()){
+    fileType = 'Router';
+  } else{
+    fileType = 'Other';
   }
-
-  return { fileType, portNumber: portNumber || null };
-}
+  
+  return { fileType, portNumber };
+};

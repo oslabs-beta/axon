@@ -1,5 +1,4 @@
 import StringBuilder from './StringBuilder';
-import { StringConfiguration, EndpointInformation } from '../interfaces/interfaces';
 
 /*
  This class is designed to group together functionality that is needed

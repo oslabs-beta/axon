@@ -1,5 +1,3 @@
-import { StringConfiguration } from '../interfaces/interfaces';
-
 /*
  This Class is designed to build a string in a better time complexity.
  It will be more performant than traditional string concatenation. 

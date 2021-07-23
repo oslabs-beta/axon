@@ -8,10 +8,10 @@ import { IdentifyFileType } from './utilityFunctions/IdentifyFileType';
  * This object is being built so that all files can be accessed in constant time, via their paths.
  * @param {FileList} fileList - This will be the FileList object that is built from the uploaded server folder 
 */
-export default function (fileList:any) {
+export default function (fileList:ServerDirectory) {
   return new Promise((resolve, reject) => {
     // Initialize the returned object
-    const pathObject: any = {};
+    const pathObject = {} as PathObject;
 
     // Delcare an array that will temporarily hold promises
     const arrayOfPromises = [];
@@ -33,7 +33,7 @@ export default function (fileList:any) {
           // When the type of file is a server, add the server path to the pathObject
           if (fileType === 'Server') {
             pathObject.__serverFilePath__ = fileList[i].webkitRelativePath;
-            pathObject.__portNumber__ = portNumber;
+            pathObject.__portNumber__ = <string>portNumber;
           }
 
           // Create a new File Object based on the file type
@@ -51,9 +51,9 @@ export default function (fileList:any) {
             };
             // When the file is neither a server nor router file
           } else {
-            newFileObject = {
+            newFileObject = <ReadResult> {
               name: fileList[i].name,
-              fileText,
+              text: fileText,
             };
           }
 
@@ -65,7 +65,7 @@ export default function (fileList:any) {
           // Add a file to the pathObject with default properties
           const newFileObject = {
             name: fileList[i].name,
-            fileText: err,
+            text: err,
           };
           pathObject[fileList[i].webkitRelativePath] = newFileObject;
         });
